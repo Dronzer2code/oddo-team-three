@@ -18,7 +18,7 @@ The system must use a shared backend and a consistent authorization model. If Od
 
 Build a carpool platform that allows employees within an organization to share rides and allows company administrators to manage organization-level data, configuration, participation, and analytics.
 
-The product must clearly separate operational and administrative responsibilities:
+The produc      t must clearly separate operational and administrative responsibilities:
 
 ```text
 Employee Web and Mobile Applications

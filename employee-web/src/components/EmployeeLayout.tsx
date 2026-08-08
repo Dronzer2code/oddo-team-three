@@ -5,6 +5,7 @@ import { Alert, Icon, type IconName } from '@carpool/ui';
 import { useAuth } from '../lib/auth';
 import { api } from '../lib/api';
 import { useApi } from '../lib/hooks';
+import { useRoleMode } from '../lib/roleMode';
 
 interface NavItem {
   to: string;
@@ -13,24 +14,24 @@ interface NavItem {
   tab?: boolean;
 }
 
-const NAV: NavItem[] = [
+const PASSENGER_NAV: NavItem[] = [
   { to: '/home', label: 'Home', icon: 'home', tab: true },
   { to: '/rides', label: 'Find a ride', icon: 'search', tab: true },
-  { to: '/rides/new', label: 'Publish a ride', icon: 'plus' },
-  { to: '/my-rides', label: 'My rides', icon: 'car', tab: true },
-  { to: '/trips', label: 'Trips', icon: 'route', tab: true },
-  { to: '/vehicles', label: 'Vehicles', icon: 'settings' },
+  { to: '/trips', label: 'My Bookings', icon: 'route', tab: true },
   { to: '/wallet', label: 'Wallet', icon: 'wallet' },
 ];
 
-/**
- * Employee shell: compact sidebar on desktop, bottom tab bar on mobile.
- * Visually lighter than the admin panel — this is a daily mobility app, not an
- * operations console.
- */
+const DRIVER_NAV: NavItem[] = [
+  { to: '/home', label: 'Home', icon: 'home', tab: true },
+  { to: '/rides/new', label: 'Publish a ride', icon: 'plus' },
+  { to: '/my-rides', label: 'My Offered Rides', icon: 'car', tab: true },
+  { to: '/vehicles', label: 'My Vehicles', icon: 'settings' },
+];
+
 export function EmployeeLayout() {
   const { user, signOut } = useAuth();
   const location = useLocation();
+  const { roleMode, setRoleMode, isDriverMode } = useRoleMode();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [minimized, setMinimized] = useState(() => {
     return localStorage.getItem('employee_sidebar_minimized') === 'true';
@@ -53,6 +54,7 @@ export function EmployeeLayout() {
   }, [location.pathname]);
 
   const suspended = user?.status === ACCOUNT_STATUS.SUSPENDED;
+  const navItems = isDriverMode ? DRIVER_NAV : PASSENGER_NAV;
 
   return (
     <div className={`app-shell has-tabbar ${minimized ? 'is-sidebar-minimized' : ''}`}>
@@ -74,9 +76,30 @@ export function EmployeeLayout() {
           </button>
         </div>
 
+        <div className="role-mode-container">
+          <div className="role-mode-switcher">
+            <button
+              className={`role-mode-btn ${roleMode === 'passenger' ? 'is-active' : ''}`}
+              onClick={() => setRoleMode('passenger')}
+              data-tooltip={minimized ? 'Passenger View' : undefined}
+            >
+              <Icon name="seat" size={15} />
+              <span className="role-mode-label">Passenger</span>
+            </button>
+            <button
+              className={`role-mode-btn ${roleMode === 'driver' ? 'is-active' : ''}`}
+              onClick={() => setRoleMode('driver')}
+              data-tooltip={minimized ? 'Driver View' : undefined}
+            >
+              <Icon name="car" size={15} />
+              <span className="role-mode-label">Driver</span>
+            </button>
+          </div>
+        </div>
+
         <nav className="main-sidebar__nav" aria-label="Sections">
-          <div className="main-sidebar__section">Commute</div>
-          {NAV.map((item) => (
+          <div className="main-sidebar__section">{isDriverMode ? 'Driver Portal' : 'Passenger Portal'}</div>
+          {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -151,7 +174,7 @@ export function EmployeeLayout() {
       </div>
 
       <nav className="tabbar" aria-label="Primary">
-        {NAV.filter((item) => item.tab).map((item) => (
+        {navItems.filter((item) => item.tab).map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
@@ -161,7 +184,7 @@ export function EmployeeLayout() {
             <span className="tabbar__icon">
               <Icon name={item.icon} size={18} />
             </span>
-            {item.label === 'Find a ride' ? 'Find' : item.label === 'My rides' ? 'Rides' : item.label}
+            {item.label === 'Find a ride' ? 'Find' : item.label === 'My Offered Rides' ? 'Rides' : item.label === 'My Bookings' ? 'Bookings' : item.label}
           </NavLink>
         ))}
         <NavLink
