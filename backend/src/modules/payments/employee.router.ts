@@ -4,7 +4,7 @@ import { actorOf, authenticate, requireRole } from '../../middleware/auth.js';
 import { parseId } from '../../middleware/validate.js';
 import { handler, ok } from '../../shared/http.js';
 import { errors } from '../../shared/errors.js';
-import { num, round2 } from '../../database/client.js';
+import { round2 } from '../../database/client.js';
 import { mapPayment } from '../../shared/mappers.js';
 
 export const employeePaymentsRouter = Router();
@@ -85,5 +85,3 @@ employeePaymentsRouter.post(
     return ok(res, mapPayment(rows[0] as Record<string, any>, actor.id), 'Payment settled');
   }),
 );
-
-export { num as _num };
