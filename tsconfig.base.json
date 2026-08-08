@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": false,
+    "baseUrl": ".",
+    "paths": {
+      "@carpool/shared": ["packages/shared/src/index.ts"],
+      "@carpool/shared/*": ["packages/shared/src/*"],
+      "@carpool/api-client": ["packages/api-client/src/index.ts"],
+      "@carpool/ui": ["packages/ui/src/index.ts"],
+      "@carpool/ui/*": ["packages/ui/src/*"]
+    }
+  }
+}

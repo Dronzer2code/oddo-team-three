@@ -1,0 +1,30 @@
+{
+  "name": "carpool-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RideSync — organization-based carpool management platform (admin, employee web, public site, mobile)",
+  "workspaces": [
+    "packages/*",
+    "backend",
+    "web",
+    "admin",
+    "employee-web"
+  ],
+  "scripts": {
+    "db:migrate": "npm run migrate -w backend",
+    "db:seed": "npm run seed -w backend",
+    "db:reset": "npm run reset -w backend",
+    "backend": "npm run dev -w backend",
+    "dev": "concurrently -n backend,web,admin,employee -c yellow,gray,cyan,green \"npm:dev -w backend\" \"npm:dev -w web\" \"npm:dev -w admin\" \"npm:dev -w employee-web\"",
+    "test": "npm run test -w backend",
+    "typecheck": "npm run typecheck -w backend && npm run typecheck -w admin && npm run typecheck -w employee-web && npm run typecheck -w web",
+    "build": "npm run build -w web && npm run build -w admin && npm run build -w employee-web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
