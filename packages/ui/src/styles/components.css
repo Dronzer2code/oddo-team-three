@@ -123,6 +123,65 @@
   border-color: rgba(197, 237, 203, 0.35);
 }
 
+/* Role Mode Switcher (Passenger vs Driver) */
+.role-mode-container {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-inverse);
+  transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.main-sidebar.is-minimized .role-mode-container {
+  padding: var(--space-3) var(--space-2);
+}
+
+.role-mode-switcher {
+  display: flex;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(197, 237, 203, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  gap: 2px;
+}
+
+.role-mode-btn {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.role-mode-btn:hover {
+  color: #ffffff;
+  background: rgba(197, 237, 203, 0.15);
+}
+
+.role-mode-btn.is-active {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  font-weight: var(--weight-medium);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.main-sidebar.is-minimized .role-mode-label {
+  display: none;
+}
+
+.main-sidebar.is-minimized .role-mode-btn {
+  padding: 6px 0;
+  flex: 1;
+}
+
 .main-sidebar__nav {
   flex: 1 1 auto;
   overflow-y: auto;

@@ -19,10 +19,12 @@ import {
 } from '@carpool/ui';
 import { api } from '../../lib/api';
 import { useApi, useMutation } from '../../lib/hooks';
+import { useRoleMode } from '../../lib/roleMode';
 import { RideCard } from '../../components/RideCard';
 
 export function MyRidesPage() {
   const toast = useToast();
+  const { isDriverMode } = useRoleMode();
   const mine = useApi(() => api.employee.rides.mine(), []);
   const incoming = useApi(() => api.employee.rides.incomingRequests(), []);
 
@@ -37,13 +39,24 @@ export function MyRidesPage() {
   return (
     <>
       <PageHeader
-        title="My rides"
-        lead="Rides you are driving, and rides where you have asked for or hold a seat."
+        title={isDriverMode ? 'My Offered Rides' : 'My Bookings'}
+        lead={
+          isDriverMode
+            ? 'Rides you are driving and offering empty seats to colleagues.'
+            : 'Rides where you requested or hold a passenger seat.'
+        }
         actions={
-          <Link className="btn btn-accent" to="/rides/new">
-            <Icon name="plus" size={16} />
-            Publish a ride
-          </Link>
+          isDriverMode ? (
+            <Link className="btn btn-accent" to="/rides/new">
+              <Icon name="plus" size={16} />
+              Publish a ride
+            </Link>
+          ) : (
+            <Link className="btn btn-primary" to="/rides">
+              <Icon name="search" size={16} />
+              Find a ride
+            </Link>
+          )
         }
       />
 
