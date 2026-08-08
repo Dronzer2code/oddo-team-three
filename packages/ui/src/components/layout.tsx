@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { Icon, type IconName } from '../icons.js';
-import { cx } from './primitives.js';
+import { Icon, type IconName } from '../icons';
+import { cx } from './primitives';
 
 /* ------------------------------------------------------------------- cards */
 

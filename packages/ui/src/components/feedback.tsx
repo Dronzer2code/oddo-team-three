@@ -6,10 +6,11 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from 'react';
-import { Icon, type IconName } from '../icons.js';
-import { Button, IconButton, cx } from './primitives.js';
+import { Icon, type IconName } from '../icons';
+import { Button, IconButton, cx } from './primitives';
 
 /* ------------------------------------------------------------------ states */
 
@@ -97,7 +98,7 @@ export function Skeleton({
   height?: number | string;
   variant?: 'text' | 'title' | 'block';
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }) {
   return (
     <span
