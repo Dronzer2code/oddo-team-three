@@ -7,7 +7,7 @@ import {
   TRIP_STATUS,
   VEHICLE_STATUS,
   VEHICLE_TYPE,
-} from './constants.js';
+} from './constants';
 
 /**
  * Validation schemas shared by client and server.

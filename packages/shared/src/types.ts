@@ -11,7 +11,7 @@ import type {
   UserRole,
   VehicleStatus,
   VehicleType,
-} from './constants.js';
+} from './constants';
 
 /* ------------------------------------------------------------------ */
 /* Transport envelope                                                  */
