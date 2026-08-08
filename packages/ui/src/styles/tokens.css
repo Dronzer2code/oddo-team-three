@@ -1,0 +1,147 @@
+/* ==========================================================================
+   RideSync — design tokens
+   --------------------------------------------------------------------------
+   The component vocabulary and layout structure follow the Stisla design
+   system (sidebar shell, section-header, card / card-header / card-body,
+   statistic cards, form-group, badges, tables). The palette and type scale are
+   the transport identity defined for this product: warm neutrals, black ink,
+   one restrained taxi amber accent. No gradients anywhere. No monospace.
+
+   Every colour, size, radius, shadow and duration used anywhere in the four
+   applications is declared here. Nothing is hardcoded in a component.
+   ========================================================================== */
+
+@import url('https://api.fontshare.com/v2/css?f%5B%5D=satoshi@300,400,500&display=swap');
+
+:root {
+  /* ---------------------------------------------------------------- type */
+  --font-sans: 'Satoshi', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* Thin for display, regular/medium for everything that must be read fast. */
+  --text-display: 3.25rem; /* 52px — public hero only */
+  --text-h1: 1.875rem; /* 30px */
+  --text-h2: 1.375rem; /* 22px */
+  --text-h3: 1.0625rem; /* 17px */
+  --text-metric: 2.125rem; /* 34px */
+  --text-metric-sm: 1.5rem; /* 24px */
+  --text-body: 0.9063rem; /* 14.5px */
+  --text-sm: 0.8125rem; /* 13px */
+  --text-label: 0.6875rem; /* 11px — uppercase, tracked */
+  --text-caption: 0.75rem; /* 12px */
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.32;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.68;
+
+  --tracking-tight: -0.022em;
+  --tracking-normal: 0;
+  --tracking-label: 0.1em;
+  --tracking-plate: 0.14em;
+
+  /* -------------------------------------------------------------- colour */
+  --color-bg: #f7f6f2;
+  --color-bg-sunken: #f1efe9;
+  --color-surface: #ffffff;
+  --color-surface-hover: #faf9f6;
+  --color-surface-inset: #f7f6f2;
+
+  --color-fg: #111111;
+  --color-fg-secondary: #5f5f5a;
+  --color-fg-muted: #8c8a84;
+  --color-fg-inverse: #fbfaf7;
+
+  --color-border: #e5e3de;
+  --color-border-strong: #d5d2cb;
+  --color-border-inverse: #2a2a27;
+
+  /* Restrained taxi amber. Used for active state, ride availability, brand
+     marks and route indicators — never as a page background. */
+  --color-accent: #e4a700;
+  --color-accent-strong: #c99000;
+  --color-accent-ink: #4a3600;
+  --color-accent-soft: #fdf4dc;
+
+  --color-danger: #b3453b;
+  --color-danger-soft: #f9ecea;
+  --color-warning: #a8700f;
+  --color-warning-soft: #fbf1e0;
+  --color-success: #2f6b4f;
+  --color-success-soft: #eaf2ed;
+  --color-neutral-soft: #f0eee9;
+
+  /* Ink surfaces: sidebar, primary buttons, dark sections. */
+  --color-ink: #141412;
+  --color-ink-soft: #1e1e1b;
+  --color-ink-hover: #262622;
+
+  --color-focus: #111111;
+  --color-overlay: rgba(20, 20, 18, 0.44);
+
+  /* ------------------------------------------------------------- spacing */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
+  --space-8: 2.5rem;
+  --space-9: 3rem;
+  --space-10: 4rem;
+  --space-11: 5rem;
+  --space-12: 7rem;
+
+  /* -------------------------------------------------------------- shape */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --radius-pill: 999px;
+
+  --border-hairline: 1px solid var(--color-border);
+  --border-strong: 1px solid var(--color-border-strong);
+
+  /* ------------------------------------------------------------ elevation */
+  --shadow-xs: 0 1px 1px rgba(17, 17, 17, 0.03);
+  --shadow-sm: 0 1px 2px rgba(17, 17, 17, 0.05);
+  --shadow: 0 1px 3px rgba(17, 17, 17, 0.05), 0 10px 26px -18px rgba(17, 17, 17, 0.16);
+  --shadow-lg: 0 2px 6px rgba(17, 17, 17, 0.06), 0 24px 48px -24px rgba(17, 17, 17, 0.22);
+  --shadow-focus: 0 0 0 3px rgba(17, 17, 17, 0.12);
+  --shadow-focus-accent: 0 0 0 3px rgba(228, 167, 0, 0.24);
+
+  /* ------------------------------------------------------------- motion */
+  --duration-instant: 90ms;
+  --duration-fast: 140ms;
+  --duration: 220ms;
+  --duration-slow: 420ms;
+  --ease: cubic-bezier(0.32, 0.72, 0.24, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ------------------------------------------------------------- layout */
+  --sidebar-width: 244px;
+  --sidebar-width-collapsed: 68px;
+  --topbar-height: 62px;
+  --content-max: 1320px;
+  --prose-max: 68ch;
+  --tabbar-height: 62px;
+
+  --z-sticky: 20;
+  --z-sidebar: 40;
+  --z-overlay: 60;
+  --z-modal: 70;
+  --z-toast: 90;
+}
+
+/* Breakpoints (documented — CSS custom properties cannot be used in media
+   queries, so these exact values are used literally throughout):
+     sm  480px   mobile landscape
+     md  768px   tablet
+     lg  1024px  laptop
+     xl  1280px  desktop
+     2xl 1560px  large desktop                                             */
