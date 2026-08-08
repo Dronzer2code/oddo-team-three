@@ -206,7 +206,11 @@ export function VehiclesPage() {
                       <td className="t-caption t-nowrap">{formatDate(vehicle.createdAt)}</td>
                       <td>
                         <div className="table__actions">
-                          <Link className="btn btn-ghost btn-sm" to={`/vehicles/${vehicle.id}`} onClick={(e) => e.stopPropagation()}>
+                          <Link
+                            className="btn btn-ghost btn-sm"
+                            to={`/vehicles/${vehicle.id}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             Open
                             <Icon name="arrowRight" size={13} />
                           </Link>

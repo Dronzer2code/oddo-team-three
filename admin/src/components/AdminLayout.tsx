@@ -29,7 +29,15 @@ const INSIGHT: NavItem[] = [
   { to: '/audit-logs', label: 'Audit logs', icon: 'history' },
 ];
 
-function NavSection({ title, items, onNavigate }: { title: string; items: NavItem[]; onNavigate: () => void }) {
+function NavSection({
+  title,
+  items,
+  onNavigate,
+}: {
+  title: string;
+  items: NavItem[];
+  onNavigate: () => void;
+}) {
   return (
     <>
       <div className="main-sidebar__section">{title}</div>
@@ -77,12 +85,11 @@ export function AdminLayout() {
     <div className="app-shell">
       <aside className={sidebarOpen ? 'main-sidebar is-open' : 'main-sidebar'}>
         <div className="main-sidebar__brand">
-          <span className="main-sidebar__brand-mark">
-            <Icon name="logo" size={16} />
-          </span>
           <span className="main-sidebar__brand-text">
-            <span className="main-sidebar__brand-name">{user?.organizationName ?? 'RideSync'}</span>
-            <span className="main-sidebar__brand-sub">Operations</span>
+            <span className="main-sidebar__brand-name">ridesync</span>
+            <span className="main-sidebar__brand-sub" title={user?.organizationName}>
+              {user?.organizationName ?? 'Administration'}
+            </span>
           </span>
         </div>
 
@@ -121,7 +128,12 @@ export function AdminLayout() {
 
           <span className="grow" />
 
-          <a className="btn btn-ghost btn-sm" href={config.employeeUrl} target="_blank" rel="noreferrer">
+          <a
+            className="btn btn-ghost btn-sm topbar__optional"
+            href={config.employeeUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
             Employee app
             <Icon name="external" size={13} />
           </a>
@@ -129,7 +141,7 @@ export function AdminLayout() {
           <div className="dropdown" ref={menuRef}>
             <button className="row" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen}>
               <Avatar name={user?.name ?? 'Admin'} size="sm" ink />
-              <span className="t-caption t-medium">{user?.name}</span>
+              <span className="t-caption t-medium topbar__optional">{user?.name}</span>
               <Icon name="chevronDown" size={14} />
             </button>
             {menuOpen ? (
@@ -157,7 +169,10 @@ export function AdminLayout() {
         </header>
 
         <main className="main-content" id="main">
-          <Outlet />
+          {/* Keyed on the path so every navigation replays the entrance. */}
+          <div className="page" key={location.pathname}>
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

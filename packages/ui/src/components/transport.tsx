@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Icon } from '../icons';
 import { cx } from './primitives';
+import { PHOTO, outlineForVehicleType, renderForVehicleType } from '../assets';
 
 /**
  * Transport-specific presentation: route timelines, seat indicators, simple
@@ -144,7 +145,10 @@ export function Meter({
         aria-valuemin={0}
         aria-valuemax={100}
       >
-        <div className={cx('meter__fill', accent && 'meter__fill--accent')} style={{ width: `${percent}%` }} />
+        <div
+          className={cx('meter__fill', accent && 'meter__fill--accent')}
+          style={{ width: `${percent}%` }}
+        />
       </div>
     </div>
   );
@@ -170,39 +174,35 @@ export function ChartLegend({ keys }: { keys: Array<{ label: string; tone?: 'ink
 }
 
 /**
- * Stock automotive/commute photography, monochrome via CSS. Centralised so
- * every application pulls from the same small, deliberate set.
+ * Photography and vehicle renders, bundled from packages/ui/assets rather than
+ * fetched from a remote host, so every screen renders offline and identically.
+ * See ./assets.ts for the full catalogue.
  */
 export const IMAGES = {
-  heroCommute:
-    'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=70',
-  cityDriving:
-    'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=70',
-  carInterior:
-    'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=70',
-  passengers:
-    'https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?auto=format&fit=crop&w=1200&q=70',
-  roadAerial:
-    'https://images.unsplash.com/photo-1494783367193-149034c05e8f?auto=format&fit=crop&w=1200&q=70',
-  parking:
-    'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=1200&q=70',
-  keys: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=70',
-  fleet:
-    'https://images.unsplash.com/photo-1567818735868-e71b99932e29?auto=format&fit=crop&w=1200&q=70',
-  signIn:
-    'https://images.unsplash.com/photo-1485291571150-772bcfc10da5?auto=format&fit=crop&w=1200&q=70',
-  adminSignIn:
-    'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&w=1200&q=70',
+  heroCommute: PHOTO.interchange,
+  cityDriving: PHOTO.cityStreet,
+  carInterior: PHOTO.driverWheel,
+  passengers: PHOTO.passenger,
+  roadAerial: PHOTO.highwayAerial,
+  openRoad: PHOTO.openRoad,
+  parking: PHOTO.carPark,
+  keys: PHOTO.doorOpen,
+  fleet: PHOTO.lot,
+  motion: PHOTO.motion,
+  night: PHOTO.night,
+  lightTrails: PHOTO.lightTrails,
+  boarding: PHOTO.boarding,
+  phoneMap: PHOTO.phoneMap,
+  signIn: PHOTO.openRoad,
+  adminSignIn: PHOTO.highwayAerial,
 } as const;
 
-const VEHICLE_IMAGES: Record<string, string> = {
-  sedan: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=70',
-  hatchback: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=70',
-  suv: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=800&q=70',
-  van: 'https://images.unsplash.com/photo-1600661653561-629509216228?auto=format&fit=crop&w=800&q=70',
-  bike: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=70',
-};
-
+/** Isometric render for a vehicle type — used on cards and detail headers. */
 export function vehicleImage(vehicleType: string | null | undefined): string {
-  return VEHICLE_IMAGES[vehicleType ?? 'sedan'] ?? VEHICLE_IMAGES.sedan!;
+  return renderForVehicleType(vehicleType ?? 'sedan');
+}
+
+/** Line mark for a vehicle type — used inline next to labels. */
+export function vehicleOutline(vehicleType: string | null | undefined): string {
+  return outlineForVehicleType(vehicleType ?? 'sedan');
 }

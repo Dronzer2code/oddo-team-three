@@ -17,6 +17,62 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ------------------------------------------------------------- scrollbars */
+
+/* The default platform scrollbar is the one piece of chrome that gives a
+   designed page away, so it is restyled to the palette: a forest thumb on a
+   mint-tinted track, thin, no arrow buttons. Firefox gets the two-value
+   `scrollbar-color` form; WebKit gets the pseudo-elements. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-accent-faint);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border: 2px solid var(--color-accent-faint);
+  border-radius: var(--radius-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fg-faint);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Inside the forest sidebar the same scrollbar inverts. */
+.main-sidebar {
+  scrollbar-color: rgba(197, 237, 203, 0.32) transparent;
+}
+.main-sidebar ::-webkit-scrollbar-track,
+.main-sidebar__nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+.main-sidebar ::-webkit-scrollbar-thumb,
+.main-sidebar__nav::-webkit-scrollbar-thumb {
+  background: rgba(197, 237, 203, 0.28);
+  border-color: transparent;
+}
+.main-sidebar ::-webkit-scrollbar-thumb:hover,
+.main-sidebar__nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 237, 203, 0.46);
+}
+
+/* Scroll containers inside cards (wide tables) get a slimmer bar. */
+.table-responsive {
+  scrollbar-width: thin;
+}
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
 body {
   min-height: 100vh;
   background: var(--color-bg);
@@ -28,6 +84,13 @@ body {
   letter-spacing: var(--tracking-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular figures where columns must line up; proportional everywhere else,
+   which is how the reference sets its large statistics. */
+.table,
+.stat__value,
+.plate {
   font-variant-numeric: tabular-nums;
 }
 
@@ -70,11 +133,14 @@ ol {
 
 /* ------------------------------------------------------------ typography */
 
+/* Rido sets headings at regular weight with heavy negative tracking — the
+   lightness comes from the tracking and the generous leading, not from a
+   hairline weight that would break on small text. */
 h1,
 h2,
 h3,
 h4 {
-  font-weight: var(--weight-light);
+  font-weight: var(--weight-regular);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
   text-wrap: balance;
@@ -96,22 +162,34 @@ p {
   text-wrap: pretty;
 }
 
-/* Utility type classes — the seven typography tokens from the brief. */
+/* Utility type classes — the typography tokens, in the reference's proportions. */
 .t-display {
   font-size: var(--text-display);
-  font-weight: var(--weight-light);
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-weight: var(--weight-regular);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-display);
+}
+.t-display-sm {
+  font-size: var(--text-display-sm);
+  font-weight: var(--weight-regular);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-display);
+}
+.t-lead {
+  font-size: var(--text-lead);
+  font-weight: var(--weight-regular);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-tight);
 }
 .t-heading {
   font-size: var(--text-h1);
-  font-weight: var(--weight-light);
+  font-weight: var(--weight-regular);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
 }
 .t-title {
   font-size: var(--text-h2);
-  font-weight: var(--weight-light);
+  font-weight: var(--weight-regular);
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-tight);
 }
@@ -125,12 +203,26 @@ p {
   font-weight: var(--weight-regular);
   line-height: var(--leading-normal);
 }
+/* Marketing body copy: one weight lighter and one step larger. */
+.t-prose {
+  font-size: 1.125rem;
+  font-weight: var(--weight-light);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-fg-secondary);
+}
 .t-label {
   font-size: var(--text-label);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--color-fg-muted);
+}
+.t-eyebrow {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-fg-secondary);
 }
 .t-caption {
   font-size: var(--text-caption);
@@ -139,10 +231,16 @@ p {
 }
 .t-metric {
   font-size: var(--text-metric);
-  font-weight: var(--weight-light);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-weight: var(--weight-medium);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-tight);
   font-variant-numeric: tabular-nums;
+}
+.t-metric-lg {
+  font-size: var(--text-metric-lg);
+  font-weight: var(--weight-medium);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .t-muted {
@@ -164,7 +262,7 @@ p {
   text-align: center;
 }
 
-/* Registration plates: tracked uppercase Satoshi, never a monospace font. */
+/* Registration plates: tracked uppercase Inter, never a monospace font. */
 .plate {
   display: inline-block;
   padding: 0.1rem 0.4rem;
@@ -280,7 +378,27 @@ p {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .grid-auto {
-  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(232px, 100%), 1fr));
+}
+
+/* Named ratio grids. These exist as classes rather than inline styles because
+   an inline grid-template-columns wins over the responsive rules below, which
+   is how a two-column detail layout ends up wider than a phone. Every track
+   uses minmax(0, …) so a wide child cannot force the column open. */
+.grid-split {
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+}
+.grid-split-tight {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+}
+.grid-even {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.grid-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+}
+.grid-cards-sm {
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 }
 
 @media (max-width: 1024px) {
@@ -289,6 +407,14 @@ p {
   }
   .grid-3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid-split,
+  .grid-split-tight,
+  .grid-even {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

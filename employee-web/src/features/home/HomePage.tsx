@@ -1,11 +1,5 @@
 import { Link } from 'react-router-dom';
-import {
-  formatDistance,
-  formatMoney,
-  formatNumber,
-  formatRelative,
-  formatTime,
-} from '@carpool/shared';
+import { formatDistance, formatMoney, formatNumber, formatRelative, formatTime } from '@carpool/shared';
 import {
   Button,
   Card,
@@ -56,7 +50,11 @@ export function HomePage() {
         <div className="section-header__text">
           <p className="t-label">{greeting()}</p>
           <h1 className="section-header__title">
-            {home.initialLoading ? <Skeleton variant="title" width="42%" /> : `${data?.greetingName ?? user?.name}.`}
+            {home.initialLoading ? (
+              <Skeleton variant="title" width="42%" />
+            ) : (
+              `${data?.greetingName ?? user?.name}.`
+            )}
           </h1>
           <p className="section-header__lead">Where are you going?</p>
         </div>
@@ -73,7 +71,7 @@ export function HomePage() {
       </div>
 
       {home.initialLoading ? (
-        <div className="grid grid-2">
+        <div className="grid grid-split-tight">
           <Skeleton variant="block" height={210} />
           <Skeleton variant="block" height={210} />
         </div>
@@ -90,8 +88,8 @@ export function HomePage() {
                 <RouteTimeline from={data.activeTrip.startLocation} to={data.activeTrip.destination} />
                 <div className="row-between">
                   <span className="t-caption">
-                    {data.activeTrip.participants.length} on board ·{' '}
-                    {data.activeTrip.vehicleSnapshot.make} {data.activeTrip.vehicleSnapshot.model}
+                    {data.activeTrip.participants.length} on board · {data.activeTrip.vehicleSnapshot.make}{' '}
+                    {data.activeTrip.vehicleSnapshot.model}
                   </span>
                   <Link className="btn btn-primary btn-sm" to={`/trips/${data.activeTrip.id}`}>
                     Manage trip
@@ -126,7 +124,7 @@ export function HomePage() {
             </Card>
           ) : null}
 
-          <div className="grid grid-2" style={{ gridTemplateColumns: '1.35fr 1fr', alignItems: 'start' }}>
+          <div className="grid grid-split-tight" style={{ alignItems: 'start' }}>
             <div>
               <SectionHeading
                 title="Your next rides"
@@ -206,7 +204,7 @@ export function HomePage() {
             </div>
 
             <div className="stack-lg">
-              <div className="grid grid-2">
+              <div className="grid grid-split-tight">
                 <Stat
                   label="Trips completed"
                   value={formatNumber(data?.stats.tripsCompleted ?? 0)}
@@ -214,7 +212,12 @@ export function HomePage() {
                   small
                   accent
                 />
-                <Stat label="Distance shared" value={formatDistance(data?.stats.distanceKm ?? 0)} icon="trend" small />
+                <Stat
+                  label="Distance shared"
+                  value={formatDistance(data?.stats.distanceKm ?? 0)}
+                  icon="trend"
+                  small
+                />
                 <Stat
                   label="Rides published"
                   value={formatNumber(data?.stats.ridesPublished ?? 0)}
@@ -241,7 +244,11 @@ export function HomePage() {
                 />
                 <CardBody flush>
                   {(data?.recentTrips ?? []).length === 0 ? (
-                    <EmptyState icon="history" title="No trips yet" text="Your completed trips will show up here." />
+                    <EmptyState
+                      icon="history"
+                      title="No trips yet"
+                      text="Your completed trips will show up here."
+                    />
                   ) : (
                     <div className="table-responsive">
                       <table className="table">

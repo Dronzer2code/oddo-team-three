@@ -42,8 +42,9 @@ export function InvitationsPage() {
 
   const invitations = useApi(() => api.admin.invitations.list({ page, pageSize: 10 }), [page]);
 
-  const create = useMutation((body: { name: string; email: string; employeeCode?: string; department?: string }) =>
-    api.admin.invitations.create(body),
+  const create = useMutation(
+    (body: { name: string; email: string; employeeCode?: string; department?: string }) =>
+      api.admin.invitations.create(body),
   );
   const bulk = useMutation((rows: Array<{ email: string; name: string; department?: string }>) =>
     api.admin.invitations.bulk(rows),
@@ -290,7 +291,9 @@ export function InvitationsPage() {
             rows={7}
             value={bulkText}
             onChange={(event) => setBulkText(event.target.value)}
-            placeholder={'Nikhil Varma, nikhil.varma@example.com, Finance\nAisha Khan, aisha.khan@example.com, Design'}
+            placeholder={
+              'Nikhil Varma, nikhil.varma@example.com, Finance\nAisha Khan, aisha.khan@example.com, Design'
+            }
           />
           <Alert tone="info">
             Rows that already have an account or a pending invitation are skipped — the rest still go out.

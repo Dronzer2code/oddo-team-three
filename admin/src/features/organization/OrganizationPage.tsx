@@ -126,10 +126,19 @@ export function OrganizationPage() {
 
       {save.error ? <Alert tone="error">{save.error.message}</Alert> : null}
 
-      <div className="grid grid-2" style={{ gridTemplateColumns: '1.2fr 1fr', alignItems: 'start', marginTop: save.error ? 'var(--space-4)' : 0 }}>
+      <div
+        className="grid grid-split-tight"
+        style={{
+          alignItems: 'start',
+          marginTop: save.error ? 'var(--space-4)' : 0,
+        }}
+      >
         <div className="stack-lg">
           <Card>
-            <CardHeader title="Identity" lead={`Organization code for self registration: ${data.organization.slug}`} />
+            <CardHeader
+              title="Identity"
+              lead={`Organization code for self registration: ${data.organization.slug}`}
+            />
             <CardBody className="stack">
               <Input
                 label="Organization name"
@@ -250,8 +259,8 @@ export function OrganizationPage() {
                 error={save.error?.fieldErrors.defaultMileageKmpl}
               />
               <Alert tone="info">
-                Fuel price and running cost are versioned separately on the Costs page so historical trips keep
-                the rate that applied at the time.
+                Fuel price and running cost are versioned separately on the Costs page so historical trips
+                keep the rate that applied at the time.
               </Alert>
               <p className="t-caption">Last updated {formatDateTime(data.settings.updatedAt)}</p>
             </CardBody>

@@ -170,7 +170,9 @@ export function CostsPage() {
                       <td>
                         <div className="row" style={{ gap: 'var(--space-2)' }}>
                           <Icon name={configuration.type === 'fuel_price' ? 'fuel' : 'car'} size={15} />
-                          <span className="t-medium">{TYPE_LABEL[configuration.type] ?? configuration.type}</span>
+                          <span className="t-medium">
+                            {TYPE_LABEL[configuration.type] ?? configuration.type}
+                          </span>
                         </div>
                       </td>
                       <td className="is-numeric">
@@ -178,11 +180,15 @@ export function CostsPage() {
                         <div className="t-caption t-muted">{configuration.unit}</div>
                       </td>
                       <td className="is-numeric">
-                        {configuration.mileageKmpl ? `${formatNumber(configuration.mileageKmpl, 1)} km/l` : '—'}
+                        {configuration.mileageKmpl
+                          ? `${formatNumber(configuration.mileageKmpl, 1)} km/l`
+                          : '—'}
                       </td>
                       <td className="t-caption t-nowrap">{formatDate(configuration.effectiveFrom)}</td>
                       <td className="t-caption t-nowrap">
-                        {configuration.effectiveUntil ? formatDate(configuration.effectiveUntil) : 'Open ended'}
+                        {configuration.effectiveUntil
+                          ? formatDate(configuration.effectiveUntil)
+                          : 'Open ended'}
                       </td>
                       <td>
                         <Badge tone={configuration.isCurrent ? 'success' : 'neutral'}>
@@ -193,7 +199,11 @@ export function CostsPage() {
                       <td>
                         <div className="table__actions">
                           {configuration.effectiveUntil === null ? (
-                            <Button variant="ghost" size="sm" onClick={() => setCloseTarget(configuration.id)}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setCloseTarget(configuration.id)}
+                            >
                               Close
                             </Button>
                           ) : null}
@@ -211,9 +221,9 @@ export function CostsPage() {
       <Card style={{ marginTop: 'var(--space-4)' }}>
         <CardBody tight>
           <p className="t-caption">
-            <span className="t-medium">How a trip is priced:</span> litres = distance ÷ fuel efficiency; cost =
-            litres × fuel price + distance × running cost. The values in force when the trip starts are copied
-            onto the trip, so later edits cannot move a closed report.
+            <span className="t-medium">How a trip is priced:</span> litres = distance ÷ fuel efficiency; cost
+            = litres × fuel price + distance × running cost. The values in force when the trip starts are
+            copied onto the trip, so later edits cannot move a closed report.
           </p>
         </CardBody>
       </Card>
@@ -262,7 +272,11 @@ export function CostsPage() {
               error={create.error?.fieldErrors.value}
               placeholder="104.50"
             />
-            <Input label="Unit" value={form.unit} onChange={(event) => setForm({ ...form, unit: event.target.value })} />
+            <Input
+              label="Unit"
+              value={form.unit}
+              onChange={(event) => setForm({ ...form, unit: event.target.value })}
+            />
             <Select
               label="Currency"
               options={['INR', 'USD', 'EUR', 'GBP'].map((value) => ({ value, label: value }))}

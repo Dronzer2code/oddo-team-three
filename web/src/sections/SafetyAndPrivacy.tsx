@@ -1,53 +1,62 @@
-import { IMAGES, Icon } from '@carpool/ui';
+import { Icon, IMAGES, type IconName } from '@carpool/ui';
 
-const POINTS = [
+const RULES: { icon: IconName; title: string; text: string }[] = [
   {
-    title: 'Colleagues only',
-    text: 'Every record carries an organization reference and every request is scoped to the signed-in user’s organization on the server.',
+    icon: 'building',
+    title: 'Nobody sees another organisation',
+    text: 'Every record carries an organisation reference, and the organisation is resolved from the signed-in account — never from anything the browser sends.',
   },
   {
-    title: 'Contact details are earned, not published',
-    text: 'A driver’s phone number appears once a seat is accepted. Before that, passengers see a name, a department and the vehicle.',
+    icon: 'shield',
+    title: 'Contact details stay private',
+    text: 'A ride shows the driver’s name, department and vehicle. Phone numbers and addresses are not exposed to other passengers.',
   },
   {
-    title: 'Approved vehicles only',
-    text: 'Companies can require vehicle approval before a car is allowed to carry colleagues. Inactive vehicles cannot be selected for new rides.',
-  },
-  {
-    title: 'Nothing quietly disappears',
-    text: 'Employees and vehicles referenced by past trips are deactivated, never deleted, so historical reports stay intact.',
+    icon: 'history',
+    title: 'Nothing is quietly deleted',
+    text: 'Records referenced by a trip, payment or report are retired rather than removed, so historical reporting cannot be rewritten.',
   },
 ];
 
+/**
+ * Safety and privacy: photographic plate left, the three rules that actually
+ * hold in the API right.
+ */
 export function SafetyAndPrivacy() {
   return (
-    <section className="section" id="safety">
-      <div className="split split--reverse">
-        <div className="split__media">
-          <img src={IMAGES.parking} alt="Parked cars in a company car park at dusk" loading="lazy" />
-        </div>
-        <div>
-          <span className="eyebrow">Safety and privacy</span>
-          <h2 className="section__title">Sharing a car is a trust decision.</h2>
-          <p className="section__lead">
-            So the platform is conservative by default: closed to your organization, minimal data on display,
-            and an audit trail behind every administrative action.
-          </p>
+    <section className="band band--faint" id="safety">
+      <div className="band__inner">
+        <div className="split split--reverse">
+          <div>
+            <span className="eyebrow">Safety and privacy</span>
+            <h2 className="split__title" style={{ marginTop: 'var(--space-4)' }}>
+              Closed to your organisation by design.
+            </h2>
+            <p className="split__lead">
+              These are not interface conventions — they are enforced on the server for every request, and
+              covered by the test suite.
+            </p>
 
-          <ul className="checklist">
-            {POINTS.map((point) => (
-              <li key={point.title}>
-                <span className="checklist__mark">
-                  <Icon name="shield" size={12} />
-                </span>
-                <span>
-                  <span className="checklist__title">{point.title}</span>
-                  <br />
-                  <span className="checklist__text">{point.text}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+            <div className="stack-lg" style={{ marginTop: 'var(--space-7)' }}>
+              {RULES.map((rule) => (
+                <div className="row" key={rule.title} style={{ alignItems: 'flex-start' }}>
+                  <span className="feature__icon" style={{ width: 42, height: 42 }}>
+                    <Icon name={rule.icon} size={20} />
+                  </span>
+                  <div className="grow">
+                    <h3 className="t-subtitle">{rule.title}</h3>
+                    <p className="t-caption" style={{ marginTop: 'var(--space-1)' }}>
+                      {rule.text}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="split__media split__media--photo">
+            <img src={IMAGES.passengers} alt="A passenger travelling in the back of a car" />
+          </div>
         </div>
       </div>
     </section>

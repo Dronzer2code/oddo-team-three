@@ -74,15 +74,27 @@ export function resolveErrorCopy(error: { code?: string; message?: string } | nu
 } {
   const code = error?.code ?? '';
   if (code === 'NETWORK_ERROR') {
-    return { title: 'Connection unavailable', text: 'Check your internet connection and try again.' };
+    return {
+      title: 'Connection unavailable',
+      text: 'Check your internet connection and try again.',
+    };
   }
   if (code === 'FORBIDDEN' || code === 'ACCOUNT_NOT_OPERATIONAL') {
-    return { title: 'Access not allowed', text: error?.message ?? 'You do not have permission to view this.' };
+    return {
+      title: 'Access not allowed',
+      text: error?.message ?? 'You do not have permission to view this.',
+    };
   }
   if (code === 'RESOURCE_NOT_FOUND') {
-    return { title: 'Not found', text: error?.message ?? 'That record no longer exists.' };
+    return {
+      title: 'Not found',
+      text: error?.message ?? 'That record no longer exists.',
+    };
   }
-  return { title: 'Something went wrong', text: error?.message ?? 'Please try again in a moment.' };
+  return {
+    title: 'Something went wrong',
+    text: error?.message ?? 'Please try again in a moment.',
+  };
 }
 
 /* --------------------------------------------------------------- skeletons */
@@ -323,7 +335,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <div className={cx('toast', `toast--${toast.tone}`)} key={toast.id}>
             <span className="toast__icon">
-              <Icon name={toast.tone === 'success' ? 'check' : toast.tone === 'error' ? 'alert' : 'info'} size={15} />
+              <Icon
+                name={toast.tone === 'success' ? 'check' : toast.tone === 'error' ? 'alert' : 'info'}
+                size={15}
+              />
             </span>
             <span className="toast__text">{toast.message}</span>
             <button className="toast__close" onClick={() => dismiss(toast.id)} aria-label="Dismiss">
@@ -369,7 +384,13 @@ export function Pagination({
         Showing {first}–{last} of {total} {label}
       </span>
       <div className="pagination__controls">
-        <Button variant="secondary" size="sm" icon="arrowLeft" disabled={page <= 1} onClick={() => onPage(page - 1)}>
+        <Button
+          variant="secondary"
+          size="sm"
+          icon="arrowLeft"
+          disabled={page <= 1}
+          onClick={() => onPage(page - 1)}
+        >
           Previous
         </Button>
         <span className="t-caption" style={{ padding: '0 var(--space-2)' }}>

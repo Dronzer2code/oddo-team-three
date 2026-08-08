@@ -1,72 +1,74 @@
-import { Button, IMAGES, Icon } from '@carpool/ui';
+import { Icon, IMAGES, VEHICLE_RENDER } from '@carpool/ui';
+import { Stars } from '../components/Stars';
 import { config } from '../lib/config';
 
-const STATS = [
-  { value: '4 seats', label: 'Empty on the average solo commute' },
-  { value: '1 platform', label: 'Rides, trips, cost and audit history' },
-  { value: '2 minutes', label: 'From publishing a ride to a filled car' },
-  { value: '0 spreadsheets', label: 'Participation and cost reporting built in' },
-];
-
+/**
+ * Forest hero band. Left: display headline with a vehicle render set inline
+ * between words, lead, a split pill action and a rating proof line. Right: a
+ * photographic plate with a white card floated over it — the reference layout.
+ */
 export function Hero() {
   return (
-    <>
-      <section className="hero">
+    <section className="band band--forest" id="top">
+      <div className="hero">
         <div>
-          <span className="eyebrow">Employee carpool platform</span>
           <h1 className="hero__title">
-            Carpooling
-            <br />
-            without the <strong>chaos</strong>.
+            Share the drive to
+            <img className="hero__title-figure" src={VEHICLE_RENDER.sedan} alt="" aria-hidden="true" />
+            work.
           </h1>
           <p className="hero__lead">
-            Your team already drives the same roads at the same time. RideSync turns those overlapping
-            commutes into shared rides — and gives the company a clear view of participation, distance,
-            fuel and cost without chasing anybody for a spreadsheet.
+            RideSync turns the cars already in your company car park into a commuting network — one
+            organisation, one set of rules, every seat accounted for.
           </p>
+
           <div className="hero__actions">
-            <Button
-              variant="primary"
-              size="lg"
-              iconAfter="arrowRight"
-              onClick={() => window.location.assign(`${config.employeeUrl}/login`)}
-            >
-              Find your first ride
-            </Button>
-            <Button variant="secondary" size="lg" onClick={() => document.getElementById('contact')?.scrollIntoView()}>
-              Request a demo
-            </Button>
+            <span className="pill-duo">
+              <span className="pill-duo__label">Already invited?</span>
+              <a className="btn btn-primary" href={`${config.employeeUrl}/login`}>
+                Employee sign in
+              </a>
+            </span>
+            <a className="btn btn-secondary" href="#contact">
+              Book a walkthrough
+            </a>
           </div>
-          <p className="t-caption" style={{ marginTop: 'var(--space-5)' }}>
-            <Icon name="shield" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }} />
-            Organization-scoped by design. Employees only ever see their own company.
-          </p>
+
+          <div className="hero__proof">
+            <div className="rating">
+              <Stars />
+              <p className="rating__caption">Trusted by mobility teams at 40+ campuses</p>
+            </div>
+          </div>
         </div>
 
         <div className="hero__media">
-          <img
-            src={IMAGES.heroCommute}
-            alt="Cars queueing on a city road during the morning commute"
-            loading="eager"
-          />
-          <div className="hero__media-caption">
-            <span className="row" style={{ gap: 8 }}>
-              <Icon name="route" size={15} />
-              <span className="t-medium">Salt Lake → Park Street</span>
-            </span>
-            <span className="t-muted">08:30 · 12.4 km · 3 seats</span>
+          <div className="hero__media-frame">
+            <img src={IMAGES.heroCommute} alt="Aerial view of a motorway interchange at rush hour" />
+          </div>
+          <div className="hero__card">
+            <h2 className="hero__card-title">Every seat, priced and accounted for.</h2>
+            <p className="hero__card-text">
+              Publish the drive you were making anyway. RideSync splits the fuel and running cost across
+              everyone on board using your organisation's own rates.
+            </p>
+            <div className="chip-row">
+              <span className="chip">
+                <Icon name="clock" size={15} />
+                Publish in seconds
+              </span>
+              <span className="chip">
+                <Icon name="route" size={15} />
+                Same-route matching
+              </span>
+              <span className="chip">
+                <Icon name="wallet" size={15} />
+                Cost split per seat
+              </span>
+            </div>
           </div>
         </div>
-      </section>
-
-      <div className="stat-strip">
-        {STATS.map((stat) => (
-          <div key={stat.label}>
-            <div className="stat-strip__value">{stat.value}</div>
-            <div className="stat-strip__label">{stat.label}</div>
-          </div>
-        ))}
       </div>
-    </>
+    </section>
   );
 }

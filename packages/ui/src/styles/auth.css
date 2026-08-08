@@ -1,38 +1,56 @@
 /* ==========================================================================
    Sign-in / onboarding screens, shared by the admin and employee apps.
-   Split layout: form on the left, monochrome automotive plate on the right.
+   --------------------------------------------------------------------------
+   One-sided layout: the form sits hard against the left edge on a white
+   ground with the wordmark pinned top-left and the legal line pinned bottom-
+   left, so the whole column reads as a single left-aligned axis. The right
+   half is a forest plate carrying road photography, a claim and live proof
+   figures — the reference design's hero treatment, reused as a sign-in aside.
    ========================================================================== */
 
 .auth {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   min-height: 100vh;
-}
-
-.auth__panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(2rem, 5vw, 4.5rem);
   background: var(--color-bg);
 }
 
+/* ------------------------------------------------------------ form column */
+
+.auth__panel {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-8);
+  padding: clamp(1.75rem, 3.4vw, 3rem) clamp(1.75rem, 4.4vw, 4.5rem);
+}
+
+/* Left-aligned, never centred: the column has one axis and everything
+   hangs off it. */
 .auth__inner {
   width: 100%;
-  max-width: 380px;
-  margin: 0 auto;
+  max-width: 400px;
+  align-self: center;
+}
+
+.auth__eyebrow {
+  font-size: var(--text-sm);
+  color: var(--color-fg-secondary);
 }
 
 .auth__title {
-  margin-top: var(--space-7);
-  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
-  font-weight: var(--weight-light);
-  letter-spacing: -0.028em;
-  line-height: 1.08;
+  margin-top: var(--space-3);
+  font-size: clamp(1.875rem, 3.4vw, 2.375rem);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.2;
 }
 
 .auth__lead {
-  margin-top: var(--space-3);
+  margin-top: var(--space-4);
+  max-width: 40ch;
+  font-size: 1.0625rem;
+  font-weight: var(--weight-light);
+  line-height: var(--leading-normal);
   color: var(--color-fg-secondary);
 }
 
@@ -42,8 +60,15 @@
   margin-top: var(--space-7);
 }
 
+.auth__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
 .auth__foot {
-  margin-top: var(--space-6);
   font-size: var(--text-sm);
   color: var(--color-fg-secondary);
 }
@@ -52,59 +77,95 @@
   color: var(--color-fg);
   border-bottom: 1px solid var(--color-border-strong);
 }
+.auth__foot a:hover {
+  border-color: var(--color-fg);
+}
+
+.auth__legal {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--text-caption);
+  color: var(--color-fg-muted);
+  flex-wrap: wrap;
+}
+
+/* ----------------------------------------------------------- aside plate */
 
 .auth__aside {
   position: relative;
   overflow: hidden;
+  margin: var(--space-3) var(--space-3) var(--space-3) 0;
+  border-radius: var(--radius-xl);
   background: var(--color-ink);
 }
-.auth__aside img {
+.auth__aside img.auth__aside-photo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(100%) contrast(1.1) brightness(0.72);
+}
+.auth__aside::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 48, 25, 0.84);
 }
 .auth__aside-content {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: var(--space-8);
   height: 100%;
-  padding: clamp(2rem, 4vw, 3.5rem);
-  color: var(--color-fg-inverse);
+  padding: clamp(2rem, 3.4vw, 3.25rem);
+  color: var(--color-mint);
 }
 .auth__aside-quote {
-  max-width: 30ch;
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  max-width: 24ch;
+  font-size: clamp(1.75rem, 2.9vw, 2.375rem);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display);
+  line-height: 1.2;
+  color: var(--color-fg-inverse);
+}
+.auth__aside-text {
+  margin-top: var(--space-4);
+  max-width: 38ch;
+  font-size: 1.0625rem;
   font-weight: var(--weight-light);
-  letter-spacing: -0.025em;
-  line-height: 1.14;
+  line-height: var(--leading-normal);
+  color: var(--color-fg-on-ink-muted);
 }
 .auth__aside-meta {
-  margin-top: var(--space-5);
-  display: flex;
-  gap: var(--space-7);
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  padding-top: var(--space-6);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 .auth__aside-stat-value {
-  font-size: var(--text-metric-sm);
-  font-weight: var(--weight-light);
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-fg-inverse);
 }
 .auth__aside-stat-label {
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-label);
-  text-transform: uppercase;
-  color: rgba(251, 250, 247, 0.5);
+  margin-top: var(--space-1);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-light);
+  color: var(--color-fg-on-ink-muted);
 }
 
+/* Demo credentials block — clearly a convenience for the walkthrough. */
 .auth__demo {
   margin-top: var(--space-6);
   padding: var(--space-4);
   border: 1px dashed var(--color-border-strong);
   border-radius: var(--radius);
-  background: var(--color-surface);
+  background: var(--color-accent-faint);
 }
 .auth__demo-title {
   font-size: var(--text-label);
@@ -126,7 +187,7 @@
   width: 100%;
   padding: var(--space-2) var(--space-3);
   border: var(--border-hairline);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   background: var(--color-surface);
   font-size: var(--text-caption);
   text-align: left;
@@ -139,12 +200,14 @@
   font-weight: var(--weight-medium);
 }
 
+/* --------------------------------------------------------------- alerts */
+
 .alert {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   font-size: var(--text-sm);
   line-height: var(--leading-snug);
 }
@@ -161,7 +224,7 @@
   color: var(--color-success);
 }
 .alert--info {
-  background: var(--color-neutral-soft);
+  background: var(--color-accent-soft);
   color: var(--color-fg-secondary);
 }
 .alert__icon {
@@ -169,11 +232,14 @@
   margin-top: 1px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .auth {
     grid-template-columns: minmax(0, 1fr);
   }
   .auth__aside {
     display: none;
+  }
+  .auth__panel {
+    padding: var(--space-6) var(--space-5) var(--space-8);
   }
 }

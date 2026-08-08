@@ -64,7 +64,7 @@ export function VehicleDetailPage() {
     return (
       <>
         <PageHeader title="Vehicle" />
-        <div className="grid grid-2">
+        <div className="grid grid-split-tight">
           <Skeleton variant="block" height={220} />
           <Skeleton variant="block" height={220} />
         </div>
@@ -117,7 +117,7 @@ export function VehicleDetailPage() {
         }
       />
 
-      <div className="grid grid-2" style={{ gridTemplateColumns: '1fr 1.25fr', alignItems: 'start' }}>
+      <div className="grid grid-split-tight" style={{ alignItems: 'start' }}>
         <Card>
           <div className="vehicle-card__media" style={{ borderRadius: 'var(--radius) var(--radius) 0 0' }}>
             <img src={vehicleImage(data.vehicleType)} alt={`${data.make} ${data.model}`} />
@@ -148,9 +148,15 @@ export function VehicleDetailPage() {
         </Card>
 
         <div className="stack-lg">
-          <div className="grid grid-2">
+          <div className="grid grid-split-tight">
             <Stat label="Rides published" value={formatNumber(data.ridesPublished)} icon="list" small />
-            <Stat label="Trips completed" value={formatNumber(data.tripsCompleted)} icon="route" small accent />
+            <Stat
+              label="Trips completed"
+              value={formatNumber(data.tripsCompleted)}
+              icon="route"
+              small
+              accent
+            />
             <Stat label="Distance" value={formatDistance(data.totalDistanceKm)} icon="trend" small />
             <Stat label="Transportation cost" value={formatMoney(data.totalCost)} icon="wallet" small />
           </div>

@@ -101,18 +101,27 @@ export function VehiclesPage() {
             title="No vehicles registered"
             text="You can ride as a passenger without a vehicle. Register one to start offering seats."
             action={
-              <Button variant="primary" icon="plus" onClick={() => setAddOpen(true)} disabled={!isOperational(user)}>
+              <Button
+                variant="primary"
+                icon="plus"
+                onClick={() => setAddOpen(true)}
+                disabled={!isOperational(user)}
+              >
                 Register a vehicle
               </Button>
             }
           />
         </Card>
       ) : (
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+        <div className="grid grid-cards-sm">
           {items.map((vehicle) => (
             <article className="vehicle-card" key={vehicle.id}>
               <div className="vehicle-card__media">
-                <img src={vehicleImage(vehicle.vehicleType)} alt={`${vehicle.make} ${vehicle.model}`} loading="lazy" />
+                <img
+                  src={vehicleImage(vehicle.vehicleType)}
+                  alt={`${vehicle.make} ${vehicle.model}`}
+                  loading="lazy"
+                />
                 <span className="vehicle-card__status">
                   <VehicleStatusBadge status={vehicle.status} />
                 </span>
@@ -179,7 +188,11 @@ export function VehiclesPage() {
       <Card style={{ marginTop: 'var(--space-4)' }}>
         <CardBody tight>
           <p className="t-caption">
-            <Icon name="shield" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }} />
+            <Icon
+              name="shield"
+              size={13}
+              style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }}
+            />
             Only an administrator can approve a vehicle for use. Registration numbers are unique within your
             organization.
           </p>
@@ -231,7 +244,10 @@ export function VehiclesPage() {
           <div className="form-row">
             <Select
               label="Vehicle type"
-              options={Object.values(VEHICLE_TYPE).map((value) => ({ value, label: VEHICLE_TYPE_LABEL[value] }))}
+              options={Object.values(VEHICLE_TYPE).map((value) => ({
+                value,
+                label: VEHICLE_TYPE_LABEL[value],
+              }))}
               value={form.vehicleType}
               onChange={(event) => setForm({ ...form, vehicleType: event.target.value })}
             />

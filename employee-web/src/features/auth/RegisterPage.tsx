@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Alert, Button, IMAGES, Icon, Input } from '@carpool/ui';
+import { Alert, AuthLayout, Button, IMAGES, Input } from '@carpool/ui';
 import { ApiError } from '@carpool/api-client';
 import { registerSchema } from '@carpool/shared';
 import { api } from '../../lib/api';
@@ -60,80 +60,68 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="auth">
-      <div className="auth__panel">
-        <div className="auth__inner">
-          <span className="brand">
-            <span className="brand__mark">
-              <Icon name="logo" size={17} />
-            </span>
-            <span className="brand__name">
-              Ride<span>Sync</span>
-            </span>
-          </span>
+    <AuthLayout
+      eyebrow="New account"
+      title="Join your organisation."
+      lead="Ask your administrator for your organisation code. Your account starts as pending until they activate carpooling access."
+      claim="Your commute is somebody else's commute too."
+      claimText="Accounts start pending. Your administrator activates carpooling access, and only then can you publish or request a seat — enforced in the API, not in the interface."
+      photo={IMAGES.cityDriving}
+      footer={
+        <span>
+          Already have an account? <Link to="/login">Sign in</Link>
+        </span>
+      }
+    >
+      <form className="auth__form" onSubmit={submit} noValidate>
+        {failure ? <Alert tone="error">{failure}</Alert> : null}
 
-          <h1 className="auth__title">Join your organization</h1>
-          <p className="auth__lead">
-            Ask your administrator for your organization code. Your account starts as pending until they
-            activate carpooling access.
-          </p>
-
-          <form className="auth__form" onSubmit={submit} noValidate>
-            {failure ? <Alert tone="error">{failure}</Alert> : null}
-
-            <Input
-              label="Organization code"
-              value={form.organizationSlug}
-              onChange={set('organizationSlug')}
-              error={errors.organizationSlug}
-              hint="For the demo organization: northwind-logistics"
-              icon="building"
-            />
-            <Input label="Full name" value={form.name} onChange={set('name')} error={errors.name} autoComplete="name" />
-            <Input
-              label="Work email"
-              type="email"
-              value={form.email}
-              onChange={set('email')}
-              error={errors.email}
-              autoComplete="email"
-            />
-            <Input
-              label="Password"
-              type="password"
-              value={form.password}
-              onChange={set('password')}
-              error={errors.password}
-              hint="At least 8 characters"
-              autoComplete="new-password"
-            />
-            <div className="form-row">
-              <Input label="Phone" optional value={form.phone} onChange={set('phone')} error={errors.phone} />
-              <Input
-                label="Department"
-                optional
-                value={form.department}
-                onChange={set('department')}
-                error={errors.department}
-              />
-            </div>
-            <Button type="submit" variant="primary" size="lg" loading={busy} block>
-              Create account
-            </Button>
-          </form>
-
-          <p className="auth__foot">
-            Already have an account? <Link to="/login">Sign in</Link>
-          </p>
+        <Input
+          label="Organization code"
+          value={form.organizationSlug}
+          onChange={set('organizationSlug')}
+          error={errors.organizationSlug}
+          hint="For the demo organization: northwind-logistics"
+          icon="building"
+        />
+        <Input
+          label="Full name"
+          value={form.name}
+          onChange={set('name')}
+          error={errors.name}
+          autoComplete="name"
+        />
+        <Input
+          label="Work email"
+          type="email"
+          value={form.email}
+          onChange={set('email')}
+          error={errors.email}
+          autoComplete="email"
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={form.password}
+          onChange={set('password')}
+          error={errors.password}
+          hint="At least 8 characters"
+          autoComplete="new-password"
+        />
+        <div className="form-row">
+          <Input label="Phone" optional value={form.phone} onChange={set('phone')} error={errors.phone} />
+          <Input
+            label="Department"
+            optional
+            value={form.department}
+            onChange={set('department')}
+            error={errors.department}
+          />
         </div>
-      </div>
-
-      <div className="auth__aside">
-        <img src={IMAGES.cityDriving} alt="" />
-        <div className="auth__aside-content">
-          <p className="auth__aside-quote">Your commute is somebody else&apos;s commute too.</p>
-        </div>
-      </div>
-    </div>
+        <Button type="submit" variant="primary" size="lg" loading={busy} block>
+          Create account
+        </Button>
+      </form>
+    </AuthLayout>
   );
 }

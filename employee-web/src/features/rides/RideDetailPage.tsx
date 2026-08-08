@@ -78,7 +78,7 @@ export function RideDetailPage() {
     return (
       <>
         <PageHeader title="Ride" />
-        <div className="grid grid-2">
+        <div className="grid grid-even">
           <Skeleton variant="block" height={240} />
           <Skeleton variant="block" height={240} />
         </div>
@@ -98,7 +98,13 @@ export function RideDetailPage() {
       <PageHeader
         title={`${formatTime(data.departureAt)} · ${data.startLocation} → ${data.destination}`}
         lead={formatDateTime(data.departureAt)}
-        breadcrumbs={[{ label: data.viewer.isDriver ? 'My rides' : 'Find a ride', href: data.viewer.isDriver ? '/my-rides' : '/rides' }, { label: 'Ride' }]}
+        breadcrumbs={[
+          {
+            label: data.viewer.isDriver ? 'My rides' : 'Find a ride',
+            href: data.viewer.isDriver ? '/my-rides' : '/rides',
+          },
+          { label: 'Ride' },
+        ]}
         renderLink={(crumb) => <Link to={crumb.href!}>{crumb.label}</Link>}
         actions={
           <>
@@ -131,7 +137,7 @@ export function RideDetailPage() {
         }
       />
 
-      <div className="grid grid-2" style={{ gridTemplateColumns: '1fr 1fr', alignItems: 'start' }}>
+      <div className="grid grid-even" style={{ alignItems: 'start' }}>
         <div className="stack-lg">
           <Card>
             <CardHeader title="Route" />
@@ -234,8 +240,8 @@ export function RideDetailPage() {
                     ) : null}
                     {myRequest.status === 'rejected' ? (
                       <Alert tone="warning">
-                        This request was declined. You can look for another ride, or request again if seats free
-                        up.
+                        This request was declined. You can look for another ride, or request again if seats
+                        free up.
                       </Alert>
                     ) : null}
                     {['pending', 'accepted'].includes(myRequest.status) ? (
@@ -409,7 +415,10 @@ export function RideDetailPage() {
               variant="primary"
               loading={requestSeat.busy}
               onClick={async () => {
-                const result = await requestSeat.run({ seats: Number(seats), note: note.trim() || undefined });
+                const result = await requestSeat.run({
+                  seats: Number(seats),
+                  note: note.trim() || undefined,
+                });
                 if (result) {
                   toast.success('Seat requested — the driver will confirm shortly');
                   setRequestOpen(false);

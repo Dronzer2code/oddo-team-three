@@ -44,11 +44,15 @@ export function DashboardPage() {
         lead="Live counts from rides, trips and cost configuration — nothing on this page is hardcoded."
         actions={
           <>
-            <Button variant="secondary" icon="refresh" onClick={() => {
-              summary.reload();
-              trend.reload();
-              activity.reload();
-            }}>
+            <Button
+              variant="secondary"
+              icon="refresh"
+              onClick={() => {
+                summary.reload();
+                trend.reload();
+                activity.reload();
+              }}
+            >
               Refresh
             </Button>
             <Link className="btn btn-primary" to="/reports">
@@ -143,7 +147,7 @@ export function DashboardPage() {
             />
           </div>
 
-          <div className="grid grid-2" style={{ marginTop: 'var(--space-6)', gridTemplateColumns: '1.6fr 1fr' }}>
+          <div className="grid grid-split" style={{ marginTop: 'var(--space-6)' }}>
             <Card>
               <CardHeader
                 title="Completed trips by month"
@@ -162,7 +166,9 @@ export function DashboardPage() {
                     text="Trip metrics appear here as soon as employees start completing rides."
                   />
                 ) : (
-                  <BarChart points={(trend.data ?? []).map((point) => ({ label: point.label, value: point.trips }))} />
+                  <BarChart
+                    points={(trend.data ?? []).map((point) => ({ label: point.label, value: point.trips }))}
+                  />
                 )}
               </CardBody>
             </Card>
@@ -173,8 +179,8 @@ export function DashboardPage() {
                 <div>
                   <div className="t-metric">{formatNumber(data.participation.participationRate, 1)}%</div>
                   <p className="t-caption">
-                    {formatNumber(data.participation.activeParticipants)} of {formatNumber(data.employees.total)}{' '}
-                    employees published, requested or completed a ride.
+                    {formatNumber(data.participation.activeParticipants)} of{' '}
+                    {formatNumber(data.employees.total)} employees published, requested or completed a ride.
                   </p>
                 </div>
                 <Meter value={data.participation.participationRate} accent />
@@ -235,7 +241,16 @@ export function DashboardPage() {
                     <tr key={entry.id}>
                       <td style={{ width: 40 }}>
                         <span className="card-statistic__icon">
-                          <Icon name={entry.entityType === 'vehicle' ? 'car' : entry.entityType === 'employee' ? 'users' : 'settings'} size={14} />
+                          <Icon
+                            name={
+                              entry.entityType === 'vehicle'
+                                ? 'car'
+                                : entry.entityType === 'employee'
+                                  ? 'users'
+                                  : 'settings'
+                            }
+                            size={14}
+                          />
                         </span>
                       </td>
                       <td>

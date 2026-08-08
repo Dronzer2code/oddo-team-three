@@ -15,7 +15,8 @@ export function cx(...parts: Array<string | false | null | undefined>): string {
 
 /* ------------------------------------------------------------------ button */
 
-export type ButtonVariant = 'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'danger-outline' | 'neutral';
+export type ButtonVariant =
+  'primary' | 'secondary' | 'accent' | 'ghost' | 'danger' | 'danger-outline' | 'neutral';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -37,7 +38,18 @@ const VARIANT_CLASS: Record<ButtonVariant, string> = {
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = 'secondary', size = 'md', icon, iconAfter, loading, block, className, children, disabled, ...rest },
+  {
+    variant = 'secondary',
+    size = 'md',
+    icon,
+    iconAfter,
+    loading,
+    block,
+    className,
+    children,
+    disabled,
+    ...rest
+  },
   ref,
 ) {
   return (
@@ -56,7 +68,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       aria-busy={loading || undefined}
       {...rest}
     >
-      {loading ? <span className="spinner" /> : icon ? <Icon name={icon} size={size === 'sm' ? 14 : 16} /> : null}
+      {loading ? (
+        <span className="spinner" />
+      ) : icon ? (
+        <Icon name={icon} size={size === 'sm' ? 14 : 16} />
+      ) : null}
       {children}
       {iconAfter && !loading ? <Icon name={iconAfter} size={size === 'sm' ? 14 : 16} /> : null}
     </button>
@@ -293,9 +309,7 @@ export function Badge({
   className?: string;
 }) {
   return (
-    <span
-      className={cx('badge', tone !== 'neutral' && `badge--${tone}`, plain && 'badge--plain', className)}
-    >
+    <span className={cx('badge', tone !== 'neutral' && `badge--${tone}`, plain && 'badge--plain', className)}>
       {children}
     </span>
   );
@@ -323,7 +337,12 @@ export function Avatar({
 
   return (
     <span
-      className={cx('avatar', size === 'sm' && 'avatar--sm', size === 'lg' && 'avatar--lg', ink && 'avatar--ink')}
+      className={cx(
+        'avatar',
+        size === 'sm' && 'avatar--sm',
+        size === 'lg' && 'avatar--lg',
+        ink && 'avatar--ink',
+      )}
       aria-hidden="true"
     >
       {src ? <img src={src} alt="" /> : letters || '—'}
@@ -369,7 +388,8 @@ export function Alert({
   children: ReactNode;
   className?: string;
 }) {
-  const icon: IconName = tone === 'error' ? 'alert' : tone === 'success' ? 'check' : tone === 'warning' ? 'alert' : 'info';
+  const icon: IconName =
+    tone === 'error' ? 'alert' : tone === 'success' ? 'check' : tone === 'warning' ? 'alert' : 'info';
   return (
     <div className={cx('alert', `alert--${tone}`, className)} role={tone === 'error' ? 'alert' : undefined}>
       <span className="alert__icon">

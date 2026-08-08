@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {
-  TRIP_STATUS,
-  formatDateTime,
-  formatDistance,
-  formatMoney,
-  formatNumber,
-} from '@carpool/shared';
+import { TRIP_STATUS, formatDateTime, formatDistance, formatMoney, formatNumber } from '@carpool/shared';
 import {
   Alert,
   Badge,
@@ -61,7 +55,7 @@ export function TripDetailPage() {
     return (
       <>
         <PageHeader title="Trip" />
-        <div className="grid grid-2">
+        <div className="grid grid-even">
           <Skeleton variant="block" height={240} />
           <Skeleton variant="block" height={240} />
         </div>
@@ -106,7 +100,7 @@ export function TripDetailPage() {
         }
       />
 
-      <div className="grid grid-2" style={{ gridTemplateColumns: '1fr 1fr', alignItems: 'start' }}>
+      <div className="grid grid-even" style={{ alignItems: 'start' }}>
         <div className="stack-lg">
           <Card>
             <CardHeader title="Journey" />
@@ -227,7 +221,10 @@ export function TripDetailPage() {
                     label: 'Running cost',
                     value: `${formatMoney(data.costSnapshot.travelCostPerKm, data.costSnapshot.currency, 2)} / km`,
                   },
-                  { label: 'Fuel efficiency', value: `${formatNumber(data.costSnapshot.mileageKmpl, 1)} km/l` },
+                  {
+                    label: 'Fuel efficiency',
+                    value: `${formatNumber(data.costSnapshot.mileageKmpl, 1)} km/l`,
+                  },
                 ]}
               />
               <Alert tone="info">
@@ -242,7 +239,9 @@ export function TripDetailPage() {
               distance travelled.
             </Alert>
           ) : null}
-          {data.status === TRIP_STATUS.COMPLETED && data.viewerShare !== null && data.viewerRole === 'passenger' ? (
+          {data.status === TRIP_STATUS.COMPLETED &&
+          data.viewerShare !== null &&
+          data.viewerRole === 'passenger' ? (
             <Card>
               <CardBody tight>
                 <div className="row-between">

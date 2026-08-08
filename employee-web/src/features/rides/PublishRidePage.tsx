@@ -57,7 +57,8 @@ export function PublishRidePage() {
   const publish = useMutation((body: Record<string, unknown>) => api.employee.rides.publish(body));
 
   const activeVehicles = (vehicles.data ?? []).filter((vehicle) => vehicle.status === VEHICLE_STATUS.ACTIVE);
-  const selectedVehicle = activeVehicles.find((vehicle) => vehicle.id === form.vehicleId) ?? activeVehicles[0];
+  const selectedVehicle =
+    activeVehicles.find((vehicle) => vehicle.id === form.vehicleId) ?? activeVehicles[0];
   const maxSeats = selectedVehicle ? Math.max(1, selectedVehicle.seatingCapacity - 1) : 1;
 
   // Prefill the route from the profile's home and work locations, once.
@@ -270,7 +271,12 @@ export function PublishRidePage() {
               </div>
               <div className="row-wrap">
                 {['07:30', '08:30', '09:30', '18:00', '19:00'].map((time) => (
-                  <Button key={time} variant={form.time === time ? 'primary' : 'secondary'} size="sm" onClick={() => set('time', time)}>
+                  <Button
+                    key={time}
+                    variant={form.time === time ? 'primary' : 'secondary'}
+                    size="sm"
+                    onClick={() => set('time', time)}
+                  >
                     {time}
                   </Button>
                 ))}
@@ -376,7 +382,9 @@ export function PublishRidePage() {
                 middle={
                   <span className="t-caption">
                     {formatDistance(Number(form.estimatedDistanceKm) || 0)} ·{' '}
-                    {departureAt ? departureAt.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : ''}
+                    {departureAt
+                      ? departureAt.toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
+                      : ''}
                   </span>
                 }
               />

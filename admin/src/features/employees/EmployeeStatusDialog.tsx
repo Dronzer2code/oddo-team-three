@@ -33,8 +33,7 @@ export function EmployeeStatusDialog({
 
   useEffect(() => {
     if (!target) return;
-    const next =
-      target.status === ACCOUNT_STATUS.ACTIVE ? ACCOUNT_STATUS.SUSPENDED : ACCOUNT_STATUS.ACTIVE;
+    const next = target.status === ACCOUNT_STATUS.ACTIVE ? ACCOUNT_STATUS.SUSPENDED : ACCOUNT_STATUS.ACTIVE;
     setStatus(next);
     setReason('');
   }, [target]);
@@ -43,7 +42,10 @@ export function EmployeeStatusDialog({
   const employee = target;
 
   const options = [
-    { value: ACCOUNT_STATUS.ACTIVE, label: employee.status === ACCOUNT_STATUS.SUSPENDED ? 'Reactivate access' : 'Activate access' },
+    {
+      value: ACCOUNT_STATUS.ACTIVE,
+      label: employee.status === ACCOUNT_STATUS.SUSPENDED ? 'Reactivate access' : 'Activate access',
+    },
     { value: ACCOUNT_STATUS.SUSPENDED, label: 'Suspend access' },
     { value: ACCOUNT_STATUS.DEACTIVATED, label: 'Deactivate account' },
   ].filter((option) => option.value !== target.status);

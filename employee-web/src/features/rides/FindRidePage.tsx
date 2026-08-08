@@ -141,7 +141,10 @@ export function FindRidePage() {
           <Select
             label="Vehicle type"
             placeholder="Any"
-            options={Object.values(VEHICLE_TYPE).map((value) => ({ value, label: VEHICLE_TYPE_LABEL[value] }))}
+            options={Object.values(VEHICLE_TYPE).map((value) => ({
+              value,
+              label: VEHICLE_TYPE_LABEL[value],
+            }))}
             value={vehicleType}
             onChange={(event) => {
               setVehicleType(event.target.value);
@@ -188,7 +191,7 @@ export function FindRidePage() {
           </Card>
         ) : (
           <>
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))' }}>
+            <div className="grid grid-cards">
               {items.map((ride) => (
                 <RideCard
                   key={ride.id}

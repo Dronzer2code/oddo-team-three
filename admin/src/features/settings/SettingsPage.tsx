@@ -62,7 +62,7 @@ export function SettingsPage() {
     <>
       <PageHeader title="Admin settings" lead="Your own administrator account." />
 
-      <div className="grid grid-2" style={{ gridTemplateColumns: '1fr 1fr', alignItems: 'start' }}>
+      <div className="grid grid-even" style={{ alignItems: 'start' }}>
         <div className="stack-lg">
           <Card>
             <CardHeader title="Account" />

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ACCOUNT_STATUS, updateProfileSchema } from '@carpool/shared';
-import { Alert, Button, Card, CardBody, IMAGES, Icon, Input, useToast } from '@carpool/ui';
+import { Alert, AuthLayout, Button, Card, CardBody, IMAGES, Input, useToast } from '@carpool/ui';
 import { ApiError } from '@carpool/api-client';
 import { api } from '../../lib/api';
 import { useAuth } from '../../lib/auth';
@@ -66,82 +66,70 @@ export function OnboardingPage() {
   const pending = user?.status === ACCOUNT_STATUS.PENDING;
 
   return (
-    <div className="auth">
-      <div className="auth__panel">
-        <div className="auth__inner">
-          <span className="brand">
-            <span className="brand__mark">
-              <Icon name="logo" size={17} />
-            </span>
-            <span className="brand__name">
-              Ride<span>Sync</span>
-            </span>
-          </span>
+    <AuthLayout
+      eyebrow="Profile"
+      title={`Two more things, ${user?.name.split(' ')[0] ?? 'there'}.`}
+      lead="Colleagues need to know where to pick you up, and how to reach you once a seat is confirmed."
+      claim="Home to office, shared."
+      claimText="Your pickup point and department help colleagues on the same route recognise you. Your phone number is only shared once a seat is confirmed."
+      photo={IMAGES.roadAerial}
+    >
+      <form className="auth__form" onSubmit={submit} noValidate>
+        {failure ? <Alert tone="error">{failure}</Alert> : null}
+        {pending ? (
+          <Alert tone="warning">
+            Your account is pending activation by an administrator. You can complete your profile now —
+            publishing and requesting rides unlocks as soon as they activate you.
+          </Alert>
+        ) : null}
 
-          <h1 className="auth__title">Two more things, {user?.name.split(' ')[0]}.</h1>
-          <p className="auth__lead">
-            Colleagues need to know where to pick you up, and how to reach you once a seat is confirmed.
+        <Input
+          label="Phone"
+          value={form.phone}
+          onChange={set('phone')}
+          error={errors.phone}
+          hint="Only shared with colleagues on a confirmed ride"
+          autoFocus
+        />
+        <Input
+          label="Where do you start from?"
+          value={form.homeLocation}
+          onChange={set('homeLocation')}
+          error={errors.homeLocation}
+          placeholder="Salt Lake Sector V"
+          icon="pin"
+        />
+        <Input
+          label="Where do you commute to?"
+          value={form.workLocation}
+          onChange={set('workLocation')}
+          error={errors.workLocation}
+          placeholder="Park Street Office"
+          icon="pin"
+        />
+        <Input
+          label="Department"
+          optional
+          value={form.department}
+          onChange={set('department')}
+          error={errors.department}
+        />
+
+        <Button type="submit" variant="primary" size="lg" loading={busy} block>
+          Finish and continue
+        </Button>
+      </form>
+
+      <Card style={{ marginTop: 'var(--space-6)' }}>
+        <CardBody tight>
+          <p className="t-caption">
+            Signed in as {user?.email}.{' '}
+            <button className="btn-link" onClick={signOut}>
+              Use a different account
+            </button>
           </p>
-
-          <form className="auth__form" onSubmit={submit} noValidate>
-            {failure ? <Alert tone="error">{failure}</Alert> : null}
-            {pending ? (
-              <Alert tone="warning">
-                Your account is pending activation by an administrator. You can complete your profile now —
-                publishing and requesting rides unlocks as soon as they activate you.
-              </Alert>
-            ) : null}
-
-            <Input
-              label="Phone"
-              value={form.phone}
-              onChange={set('phone')}
-              error={errors.phone}
-              hint="Only shared with colleagues on a confirmed ride"
-              autoFocus
-            />
-            <Input
-              label="Where do you start from?"
-              value={form.homeLocation}
-              onChange={set('homeLocation')}
-              error={errors.homeLocation}
-              placeholder="Salt Lake Sector V"
-              icon="pin"
-            />
-            <Input
-              label="Where do you commute to?"
-              value={form.workLocation}
-              onChange={set('workLocation')}
-              error={errors.workLocation}
-              placeholder="Park Street Office"
-              icon="pin"
-            />
-            <Input label="Department" optional value={form.department} onChange={set('department')} error={errors.department} />
-
-            <Button type="submit" variant="primary" size="lg" loading={busy} block>
-              Finish and continue
-            </Button>
-          </form>
-
-          <Card style={{ marginTop: 'var(--space-6)' }}>
-            <CardBody tight>
-              <p className="t-caption">
-                Signed in as {user?.email}.{' '}
-                <button className="btn-link" onClick={signOut}>
-                  Use a different account
-                </button>
-              </p>
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-
-      <div className="auth__aside">
-        <img src={IMAGES.roadAerial} alt="" />
-        <div className="auth__aside-content">
-          <p className="auth__aside-quote">Home to office, shared.</p>
-        </div>
-      </div>
-    </div>
+        </CardBody>
+      </Card>
+    </AuthLayout>
   );
 }

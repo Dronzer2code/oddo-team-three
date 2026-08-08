@@ -93,7 +93,10 @@ export function ActivityPage() {
 
   return (
     <>
-      <PageHeader title="Activity" lead="Everything waiting on you, and everything waiting on somebody else." />
+      <PageHeader
+        title="Activity"
+        lead="Everything waiting on you, and everything waiting on somebody else."
+      />
 
       {error ? (
         <Card>
@@ -176,7 +179,11 @@ export function ActivityPage() {
                   {(incoming.data ?? []).map((request) => (
                     <tr key={request.id}>
                       <td>
-                        <Identity name={request.passenger.name} meta={request.passenger.department ?? '—'} size="sm" />
+                        <Identity
+                          name={request.passenger.name}
+                          meta={request.passenger.department ?? '—'}
+                          size="sm"
+                        />
                       </td>
                       <td>
                         <RequestStatusBadge status={request.status} />

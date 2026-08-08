@@ -90,7 +90,10 @@ export function AuditLogsPage() {
           <Select
             label="Action"
             placeholder="All actions"
-            options={(actions.data ?? []).map((value) => ({ value, label: AUDIT_ACTION_LABEL[value] ?? value }))}
+            options={(actions.data ?? []).map((value) => ({
+              value,
+              label: AUDIT_ACTION_LABEL[value] ?? value,
+            }))}
             value={action}
             onChange={(event) => {
               setAction(event.target.value);
@@ -195,7 +198,8 @@ export function AuditLogsPage() {
                                       (entry.newValues ?? {})[key],
                                     )}`,
                                 )
-                                .join(', ') + (changedKeys.length > 2 ? ` +${changedKeys.length - 2} more` : '')}
+                                .join(', ') +
+                              (changedKeys.length > 2 ? ` +${changedKeys.length - 2} more` : '')}
                         </td>
                         <td>
                           <div className="table__actions">
@@ -226,7 +230,7 @@ export function AuditLogsPage() {
         open={selected !== null}
         onClose={() => setSelected(null)}
         wide
-        title={selected ? AUDIT_ACTION_LABEL[selected.action] ?? selected.action : ''}
+        title={selected ? (AUDIT_ACTION_LABEL[selected.action] ?? selected.action) : ''}
         lead={selected ? `${selected.actorName} · ${formatDateTime(selected.createdAt)}` : ''}
       >
         {selected ? (

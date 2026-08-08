@@ -125,13 +125,18 @@ export function EmployeeDetailPage() {
       />
 
       <div className="grid grid-4">
-        <Stat label="Account status" value={<AccountStatusBadge status={data.status} />} small icon="shield" />
+        <Stat
+          label="Account status"
+          value={<AccountStatusBadge status={data.status} />}
+          small
+          icon="shield"
+        />
         <Stat label="Rides published" value={formatNumber(data.ridesPublished)} small icon="list" />
         <Stat label="Trips completed" value={formatNumber(data.tripsCompleted)} small icon="route" accent />
         <Stat label="Distance travelled" value={formatDistance(data.totalDistanceKm)} small icon="trend" />
       </div>
 
-      <div className="grid grid-2" style={{ marginTop: 'var(--space-6)', gridTemplateColumns: '1.3fr 1fr' }}>
+      <div className="grid grid-split-tight" style={{ marginTop: 'var(--space-6)' }}>
         <div className="stack-lg">
           <Card>
             <CardHeader title="Employee details" />
@@ -187,7 +192,10 @@ export function EmployeeDetailPage() {
                     { label: 'Email', value: data.email },
                     { label: 'Phone', value: data.phone ?? '—' },
                     { label: 'Organization', value: data.organizationName },
-                    { label: 'Participation', value: <ParticipationBadge active={data.isActiveParticipant} /> },
+                    {
+                      label: 'Participation',
+                      value: <ParticipationBadge active={data.isActiveParticipant} />,
+                    },
                     { label: 'Account created', value: formatDate(data.createdAt) },
                     {
                       label: 'Last activity',
@@ -268,11 +276,18 @@ export function EmployeeDetailPage() {
                 <Skeleton width="55%" />
               </div>
             ) : (audit.data ?? []).length === 0 ? (
-              <EmptyState icon="history" title="No changes recorded" text="Access and detail changes appear here." />
+              <EmptyState
+                icon="history"
+                title="No changes recorded"
+                text="Access and detail changes appear here."
+              />
             ) : (
               <div className="stack" style={{ padding: 'var(--space-4)' }}>
                 {(audit.data ?? []).map((entry) => (
-                  <div key={entry.id} style={{ borderLeft: '2px solid var(--color-border)', paddingLeft: 'var(--space-4)' }}>
+                  <div
+                    key={entry.id}
+                    style={{ borderLeft: '2px solid var(--color-border)', paddingLeft: 'var(--space-4)' }}
+                  >
                     <div className="t-medium">{AUDIT_ACTION_LABEL[entry.action] ?? entry.action}</div>
                     <div className="t-caption">
                       {entry.actorName} · {formatDateTime(entry.createdAt)}

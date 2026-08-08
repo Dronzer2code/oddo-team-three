@@ -9,3 +9,4 @@ build/
 coverage/
 .vite/
 .expo/
+tools/design-sync/out/

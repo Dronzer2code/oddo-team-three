@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Alert, Button, Input, Textarea } from '@carpool/ui';
 import { ApiError } from '@carpool/api-client';
 import { contactRequestSchema } from '@carpool/shared';
+import { Stars } from '../components/Stars';
 import { api } from '../lib/config';
 
 interface FormState {
@@ -12,18 +13,43 @@ interface FormState {
   message: string;
 }
 
-const EMPTY: FormState = { name: '', email: '', company: '', employees: '', message: '' };
+const EMPTY: FormState = {
+  name: '',
+  email: '',
+  company: '',
+  employees: '',
+  message: '',
+};
 
+const OFFICES = [
+  {
+    city: 'Kolkata',
+    address: '14 Park Street, Kolkata 700016',
+    phone: '+91 33 4000 1200',
+  },
+  {
+    city: 'Pune',
+    address: 'Level 6, Amar Tech Park, Balewadi 411045',
+    phone: '+91 20 6720 4400',
+  },
+];
+
+/**
+ * Contact section, following the reference's contact page: centred intro with a
+ * rating line, a forest form card with mint fields, then the office list.
+ * Posts to the real API using the same zod schema the server validates with.
+ */
 export function Contact() {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [failure, setFailure] = useState<string | null>(null);
 
-  const set = (key: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm((current) => ({ ...current, [key]: event.target.value }));
-    setErrors((current) => ({ ...current, [key]: '' }));
-  };
+  const set =
+    (key: keyof FormState) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setForm((current) => ({ ...current, [key]: event.target.value }));
+      setErrors((current) => ({ ...current, [key]: '' }));
+    };
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -59,51 +85,44 @@ export function Contact() {
   }
 
   return (
-    <section className="section" id="contact">
-      <div className="cta" style={{ marginBottom: 'var(--space-8)' }}>
-        <div>
-          <h2 className="cta__title">Ready to take cars off the road?</h2>
-          <p className="cta__text">
-            Tell us how many people commute to your offices and we will set up a walkthrough with your own
-            cost configuration.
-          </p>
-        </div>
-        <Button variant="accent" size="lg" iconAfter="arrowRight" onClick={() => document.getElementById('contact-form')?.scrollIntoView()}>
-          Request a demo
-        </Button>
-      </div>
-
-      <div className="split" id="contact-form">
-        <div>
-          <span className="eyebrow">Contact</span>
-          <h2 className="section__title">Talk to us.</h2>
-          <p className="section__lead">
-            We will reply with a demo organization seeded with your own numbers, so you can see the dashboard
-            and reports before rolling anything out.
-          </p>
-          <div className="stack" style={{ marginTop: 'var(--space-6)' }}>
-            <div>
-              <div className="t-label">Email</div>
-              <div>mobility@ridesync.example.com</div>
-            </div>
-            <div>
-              <div className="t-label">Phone</div>
-              <div>+91 33 4000 1200</div>
-            </div>
-            <div>
-              <div className="t-label">Office</div>
-              <div>14 Park Street, Kolkata 700016</div>
-            </div>
+    <section className="band band--faint" id="contact">
+      <div className="band__inner">
+        <div className="section-head section-head--center">
+          <span className="eyebrow">Ready when you are</span>
+          <div className="section-head__text">
+            <h2 className="section-head__title" style={{ fontSize: 'clamp(2.25rem, 4vw, 3.125rem)' }}>
+              Get in touch.
+            </h2>
+            <p className="section-head__lead" style={{ margin: 'var(--space-4) auto 0' }}>
+              Tell us how many people commute to your offices and we will set up a walkthrough on a demo
+              organisation seeded with your own cost configuration.
+            </p>
+          </div>
+          <div className="rating rating--center">
+            <Stars />
+            <p className="rating__caption">Usually answered within one working day</p>
           </div>
         </div>
 
-        <form className="card" onSubmit={submit} noValidate>
-          <div className="card-body stack">
+        <form
+          className="panel panel--forest"
+          onSubmit={submit}
+          noValidate
+          style={{ maxWidth: 880, margin: '0 auto' }}
+        >
+          <div className="stack" style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
             {status === 'sent' ? <Alert tone="success">Thanks — we will be in touch shortly.</Alert> : null}
             {failure ? <Alert tone="error">{failure}</Alert> : null}
 
             <div className="form-row">
-              <Input label="Your name" value={form.name} onChange={set('name')} error={errors.name} autoComplete="name" />
+              <Input
+                label="Your name"
+                value={form.name}
+                onChange={set('name')}
+                error={errors.name}
+                autoComplete="name"
+                placeholder="Jaya Sharma"
+              />
               <Input
                 label="Work email"
                 type="email"
@@ -111,17 +130,24 @@ export function Contact() {
                 onChange={set('email')}
                 error={errors.email}
                 autoComplete="email"
+                placeholder="jaya@company.com"
               />
             </div>
             <div className="form-row">
-              <Input label="Company" value={form.company} onChange={set('company')} error={errors.company} />
+              <Input
+                label="Company"
+                value={form.company}
+                onChange={set('company')}
+                error={errors.company}
+                placeholder="Meridian Works"
+              />
               <Input
                 label="Commuting employees"
                 value={form.employees}
                 onChange={set('employees')}
                 error={errors.employees}
                 optional
-                placeholder="e.g. 250"
+                placeholder="250"
               />
             </div>
             <Textarea
@@ -129,17 +155,52 @@ export function Contact() {
               value={form.message}
               onChange={set('message')}
               error={errors.message}
-              rows={4}
+              rows={5}
               placeholder="We have three offices and no visibility on who is driving in alone…"
             />
-            <Button type="submit" variant="primary" loading={status === 'sending'} block>
+            <Button type="submit" variant="secondary" size="lg" loading={status === 'sending'} block>
               Send request
             </Button>
-            <p className="t-caption">
+            <p className="t-caption" style={{ color: 'var(--color-fg-on-ink-muted)' }}>
               We only use these details to reply to your request.
             </p>
           </div>
         </form>
+
+        <div className="split" style={{ marginTop: 'clamp(3rem, 6vw, 5rem)' }}>
+          <div>
+            <span className="eyebrow">Our offices</span>
+            <h3
+              className="split__title"
+              style={{
+                marginTop: 'var(--space-4)',
+                fontSize: 'clamp(1.5rem, 2.6vw, 2rem)',
+              }}
+            >
+              Come and see it running.
+            </h3>
+          </div>
+          <div className="grid grid-2">
+            {OFFICES.map((office) => (
+              <div key={office.city}>
+                <h4 className="t-lead" style={{ fontSize: '1.25rem' }}>
+                  {office.city}
+                </h4>
+                <p className="t-caption" style={{ marginTop: 'var(--space-3)' }}>
+                  {office.address}
+                </p>
+                <p className="t-caption" style={{ marginTop: 'var(--space-2)' }}>
+                  <span className="t-medium">Office </span>
+                  {office.phone}
+                </p>
+                <p className="t-caption" style={{ marginTop: 'var(--space-1)' }}>
+                  <span className="t-medium">Email </span>
+                  mobility@ridesync.example.com
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

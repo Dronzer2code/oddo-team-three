@@ -68,7 +68,16 @@ export function ReportsPage() {
   function exportCsv() {
     if (!data) return;
     const rows = [
-      ['Vehicle', 'Registration', 'Trips', 'Distance km', 'Fuel litres', 'Cost', 'Cost per km', 'Efficiency km/l'],
+      [
+        'Vehicle',
+        'Registration',
+        'Trips',
+        'Distance km',
+        'Fuel litres',
+        'Cost',
+        'Cost per km',
+        'Efficiency km/l',
+      ],
       ...data.vehicles.map((vehicle) => [
         vehicle.label,
         vehicle.registrationNumber,
@@ -128,7 +137,10 @@ export function ReportsPage() {
           <Select
             label="Driver"
             placeholder="All drivers"
-            options={(drivers.data?.items ?? []).map((driver) => ({ value: driver.employeeId, label: driver.name }))}
+            options={(drivers.data?.items ?? []).map((driver) => ({
+              value: driver.employeeId,
+              label: driver.name,
+            }))}
             value={driverId}
             onChange={(event) => setDriverId(event.target.value)}
           />
@@ -212,7 +224,9 @@ export function ReportsPage() {
                   text="Widen the date range or clear the filters."
                 />
               ) : (
-                <BarChart points={data.monthly.map((point) => ({ label: point.label, value: point.trips }))} />
+                <BarChart
+                  points={data.monthly.map((point) => ({ label: point.label, value: point.trips }))}
+                />
               )}
             </CardBody>
           </Card>
@@ -248,7 +262,9 @@ export function ReportsPage() {
                             <td className="is-numeric">{formatNumber(vehicle.distanceKm)}</td>
                             <td className="is-numeric">{formatNumber(vehicle.fuelLitres, 1)}</td>
                             <td className="is-numeric">{formatMoney(vehicle.cost, data.totals.currency)}</td>
-                            <td className="is-numeric">{formatMoney(vehicle.costPerKm, data.totals.currency, 2)}</td>
+                            <td className="is-numeric">
+                              {formatMoney(vehicle.costPerKm, data.totals.currency, 2)}
+                            </td>
                             <td className="is-numeric">{formatNumber(vehicle.efficiencyKmpl, 1)}</td>
                           </tr>
                         ))}
@@ -302,10 +318,14 @@ export function ReportsPage() {
           <Card style={{ marginTop: 'var(--space-4)' }}>
             <CardBody tight>
               <p className="t-caption">
-                <Icon name="info" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }} />
-                Both range boundaries are inclusive — a report for 1–31 March includes a trip completed at 18:40
-                on 31 March. Fuel and cost come from each trip's snapshot, so re-running an old report reproduces
-                the original numbers.
+                <Icon
+                  name="info"
+                  size={13}
+                  style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }}
+                />
+                Both range boundaries are inclusive — a report for 1–31 March includes a trip completed at
+                18:40 on 31 March. Fuel and cost come from each trip's snapshot, so re-running an old report
+                reproduces the original numbers.
               </p>
             </CardBody>
           </Card>

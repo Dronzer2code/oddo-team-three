@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Alert, Button, IMAGES, Icon, Input } from '@carpool/ui';
+import { Alert, AuthLayout, Button, IMAGES, Input } from '@carpool/ui';
 import { ApiError } from '@carpool/api-client';
 import { loginSchema } from '@carpool/shared';
 import { useAuth } from '../../lib/auth';
@@ -10,6 +10,12 @@ const DEMO_ACCOUNTS = [
   { role: 'Driver', email: 'ananya.bose@example.com' },
   { role: 'Passenger', email: 'meera.iyer@example.com' },
   { role: 'Suspended', email: 'imran.sheikh@example.com' },
+];
+
+const PROOF = [
+  { value: 'Colleagues', label: 'Only your organisation' },
+  { value: 'Split', label: 'Cost shared per seat' },
+  { value: 'Both', label: 'Drive or ride, one account' },
 ];
 
 export function LoginPage() {
@@ -57,90 +63,68 @@ export function LoginPage() {
   }
 
   return (
-    <div className="auth">
-      <div className="auth__panel">
-        <div className="auth__inner">
-          <span className="brand">
-            <span className="brand__mark">
-              <Icon name="logo" size={17} />
-            </span>
-            <span className="brand__name">
-              Ride<span>Sync</span>
-            </span>
-          </span>
+    <AuthLayout
+      eyebrow="Employee access"
+      title="Where are you going today?"
+      lead="Sign in to find a ride with colleagues, or offer the seats you were driving with empty anyway."
+      claim="Four empty seats is four cars nobody needed to drive."
+      claimText="Publish the drive you were making anyway. RideSync splits the fuel and running cost across everyone on board, at your organisation's own rates."
+      proof={PROOF}
+      photo={IMAGES.signIn}
+      footer={
+        <span>
+          <Link to="/register">Join your organisation</Link> ·{' '}
+          <a href={`${config.adminUrl}/login`}>Admin panel</a>
+        </span>
+      }
+    >
+      <form className="auth__form" onSubmit={submit} noValidate>
+        {failure ? <Alert tone="error">{failure}</Alert> : null}
 
-          <h1 className="auth__title">Where are you going today?</h1>
-          <p className="auth__lead">Sign in to find a ride with colleagues, or offer the seats in your car.</p>
+        <Input
+          label="Work email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          error={errors.email}
+          autoComplete="username"
+          autoFocus
+          icon="mail"
+          placeholder="you@company.com"
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          error={errors.password}
+          autoComplete="current-password"
+          placeholder="••••••••"
+        />
+        <Button type="submit" variant="primary" size="lg" loading={busy} block>
+          Sign in
+        </Button>
+      </form>
 
-          <form className="auth__form" onSubmit={submit} noValidate>
-            {failure ? <Alert tone="error">{failure}</Alert> : null}
-
-            <Input
-              label="Work email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              error={errors.email}
-              autoComplete="username"
-              autoFocus
-              icon="mail"
-            />
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              error={errors.password}
-              autoComplete="current-password"
-            />
-            <Button type="submit" variant="primary" size="lg" loading={busy} block>
-              Sign in
-            </Button>
-          </form>
-
-          <div className="auth__demo">
-            <div className="auth__demo-title">Demo accounts — password Password123!</div>
-            <div className="auth__demo-list">
-              {DEMO_ACCOUNTS.map((account) => (
-                <button
-                  type="button"
-                  className="auth__demo-row"
-                  key={account.email}
-                  onClick={() => {
-                    setEmail(account.email);
-                    setPassword('Password123!');
-                  }}
-                >
-                  <span className="auth__demo-role">{account.role}</span>
-                  <span className="t-muted">{account.email}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <p className="auth__foot">
-            New here? <Link to="/register">Join your organization</Link> · Administrator?{' '}
-            <a href={`${config.adminUrl}/login`}>Admin panel</a>
-          </p>
+      <div className="auth__demo">
+        <div className="auth__demo-title">Demo accounts — password Password123!</div>
+        <div className="auth__demo-list">
+          {DEMO_ACCOUNTS.map((account) => (
+            <button
+              type="button"
+              className="auth__demo-row"
+              key={account.email}
+              onClick={() => {
+                setEmail(account.email);
+                setPassword('Password123!');
+              }}
+            >
+              <span className="auth__demo-role">{account.role}</span>
+              <span className="t-muted">{account.email}</span>
+            </button>
+          ))}
         </div>
       </div>
-
-      <div className="auth__aside">
-        <img src={IMAGES.signIn} alt="" />
-        <div className="auth__aside-content">
-          <p className="auth__aside-quote">Four empty seats is four cars nobody needed to drive.</p>
-          <div className="auth__aside-meta">
-            <div>
-              <div className="auth__aside-stat-value">Colleagues</div>
-              <div className="auth__aside-stat-label">Only your organization</div>
-            </div>
-            <div>
-              <div className="auth__aside-stat-value">Shared cost</div>
-              <div className="auth__aside-stat-label">Split automatically</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </AuthLayout>
   );
 }

@@ -134,7 +134,10 @@ export function MyRidesPage() {
         <SkeletonCards count={2} />
       ) : (
         <>
-          <SectionHeading title="You are driving" lead={`${driving.length} ride${driving.length === 1 ? '' : 's'}`} />
+          <SectionHeading
+            title="You are driving"
+            lead={`${driving.length} ride${driving.length === 1 ? '' : 's'}`}
+          />
           {driving.length === 0 ? (
             <Card>
               <EmptyState
@@ -149,7 +152,7 @@ export function MyRidesPage() {
               />
             </Card>
           ) : (
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))' }}>
+            <div className="grid grid-cards">
               {driving.map((ride) => (
                 <RideCard key={ride.id} ride={ride} />
               ))}
@@ -174,14 +177,16 @@ export function MyRidesPage() {
               />
             </Card>
           ) : (
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))' }}>
+            <div className="grid grid-cards">
               {riding.map((ride) => (
                 <RideCard
                   key={ride.id}
                   ride={ride}
                   action={
                     <div className="row" style={{ gap: 'var(--space-2)' }}>
-                      {ride.viewer.requestStatus ? <RequestStatusBadge status={ride.viewer.requestStatus} /> : null}
+                      {ride.viewer.requestStatus ? (
+                        <RequestStatusBadge status={ride.viewer.requestStatus} />
+                      ) : null}
                       <Link className="btn btn-secondary btn-sm" to={`/rides/${ride.id}`}>
                         View
                         <Icon name="arrowRight" size={14} />

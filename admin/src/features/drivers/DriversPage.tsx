@@ -39,7 +39,7 @@ export function DriversPage() {
         lead="Employees who own at least one vehicle. Employee + vehicle = driver — there is no separate driver account."
       />
 
-      <Alert tone="info" className="animate-in" >
+      <Alert tone="info" className="animate-in">
         <span>
           A driver is also a passenger on somebody else&apos;s ride. Access is controlled from{' '}
           <Link to="/employees" className="t-medium">

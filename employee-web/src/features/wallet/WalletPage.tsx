@@ -136,8 +136,12 @@ export function WalletPage() {
                           <td>
                             <PaymentStatusBadge status={payment.status} />
                           </td>
-                          <td className="is-numeric t-medium">{formatMoney(payment.amount, payment.currency)}</td>
-                          <td className="t-caption t-nowrap">{formatDate(payment.paidAt ?? payment.createdAt)}</td>
+                          <td className="is-numeric t-medium">
+                            {formatMoney(payment.amount, payment.currency)}
+                          </td>
+                          <td className="t-caption t-nowrap">
+                            {formatDate(payment.paidAt ?? payment.createdAt)}
+                          </td>
                           <td>
                             <div className="table__actions">
                               {payment.status === 'pending' && payment.direction === 'incoming' ? (

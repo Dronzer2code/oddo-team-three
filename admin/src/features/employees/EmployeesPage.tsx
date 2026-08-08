@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ACCOUNT_STATUS, formatDate, formatNumber, formatRelative, type AccountStatus } from '@carpool/shared';
+import {
+  ACCOUNT_STATUS,
+  formatDate,
+  formatNumber,
+  formatRelative,
+  type AccountStatus,
+} from '@carpool/shared';
 import {
   AccountStatusBadge,
   Button,
@@ -198,7 +204,10 @@ export function EmployeesPage() {
                   {items.map((employee) => (
                     <tr key={employee.id} onClick={() => navigate(`/employees/${employee.id}`)}>
                       <td>
-                        <Identity name={employee.name} meta={`${employee.employeeCode ?? '—'} · ${employee.email}`} />
+                        <Identity
+                          name={employee.name}
+                          meta={`${employee.employeeCode ?? '—'} · ${employee.email}`}
+                        />
                       </td>
                       <td className="t-caption">{employee.department ?? '—'}</td>
                       <td>
@@ -254,7 +263,8 @@ export function EmployeesPage() {
           <CardBody tight>
             <p className="t-caption">
               Employees are never deleted — rides, trips and payments reference them. Use{' '}
-              <span className="t-medium">Deactivate</span> to remove access permanently while keeping history intact.
+              <span className="t-medium">Deactivate</span> to remove access permanently while keeping history
+              intact.
             </p>
           </CardBody>
         </Card>

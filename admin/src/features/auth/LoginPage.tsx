@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { Alert, Button, IMAGES, Icon, Input } from '@carpool/ui';
+import { Alert, AuthLayout, Button, IMAGES, Input } from '@carpool/ui';
 import { ApiError } from '@carpool/api-client';
 import { loginSchema } from '@carpool/shared';
 import { useAuth } from '../../lib/auth';
@@ -9,6 +9,12 @@ import { config } from '../../lib/api';
 const DEMO_ACCOUNTS = [
   { role: 'Administrator', email: 'admin@northwind.example.com' },
   { role: 'Second organization', email: 'admin@fairwind.example.com' },
+];
+
+const PROOF = [
+  { value: 'Scoped', label: 'One organisation per admin' },
+  { value: 'Audited', label: 'Every change recorded' },
+  { value: 'Versioned', label: 'Costs keep their history' },
 ];
 
 export function LoginPage() {
@@ -56,92 +62,67 @@ export function LoginPage() {
   }
 
   return (
-    <div className="auth">
-      <div className="auth__panel">
-        <div className="auth__inner">
-          <span className="brand">
-            <span className="brand__mark">
-              <Icon name="logo" size={17} />
-            </span>
-            <span className="brand__name">
-              Ride<span>Sync</span>
-            </span>
-          </span>
+    <AuthLayout
+      eyebrow="Administrator access"
+      title="Run the carpool for your organisation."
+      lead="Employees, vehicles, cost configuration, participation and reporting — scoped to your organisation and audited end to end."
+      claim="Every seat you fill is a car you take off the road."
+      claimText="RideSync resolves your organisation from the signed-in account, never from the browser. An administrator can only ever see their own."
+      proof={PROOF}
+      photo={IMAGES.adminSignIn}
+      footer={
+        <span>
+          Employee instead? <a href={`${config.employeeUrl}/login`}>Sign in there</a>
+        </span>
+      }
+    >
+      <form className="auth__form" onSubmit={submit} noValidate>
+        {failure ? <Alert tone="error">{failure}</Alert> : null}
 
-          <h1 className="auth__title">Organization administration</h1>
-          <p className="auth__lead">
-            Manage employees, vehicles, cost configuration and reporting for your organization.
-          </p>
+        <Input
+          label="Work email"
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          error={errors.email}
+          autoComplete="username"
+          autoFocus
+          icon="mail"
+          placeholder="admin@company.com"
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          error={errors.password}
+          autoComplete="current-password"
+          placeholder="••••••••"
+        />
+        <Button type="submit" variant="primary" size="lg" loading={busy} block>
+          Sign in
+        </Button>
+      </form>
 
-          <form className="auth__form" onSubmit={submit} noValidate>
-            {failure ? <Alert tone="error">{failure}</Alert> : null}
-
-            <Input
-              label="Work email"
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              error={errors.email}
-              autoComplete="username"
-              autoFocus
-              icon="mail"
-            />
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              error={errors.password}
-              autoComplete="current-password"
-            />
-            <Button type="submit" variant="primary" size="lg" loading={busy} block>
-              Sign in
-            </Button>
-          </form>
-
-          <div className="auth__demo">
-            <div className="auth__demo-title">Demo accounts — password Password123!</div>
-            <div className="auth__demo-list">
-              {DEMO_ACCOUNTS.map((account) => (
-                <button
-                  type="button"
-                  className="auth__demo-row"
-                  key={account.email}
-                  onClick={() => {
-                    setEmail(account.email);
-                    setPassword('Password123!');
-                  }}
-                >
-                  <span className="auth__demo-role">{account.role}</span>
-                  <span className="t-muted">{account.email}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <p className="auth__foot">
-            Looking for the employee application?{' '}
-            <a href={`${config.employeeUrl}/login`}>Sign in there instead</a>.
-          </p>
+      <div className="auth__demo">
+        <div className="auth__demo-title">Demo accounts — password Password123!</div>
+        <div className="auth__demo-list">
+          {DEMO_ACCOUNTS.map((account) => (
+            <button
+              type="button"
+              className="auth__demo-row"
+              key={account.email}
+              onClick={() => {
+                setEmail(account.email);
+                setPassword('Password123!');
+              }}
+            >
+              <span className="auth__demo-role">{account.role}</span>
+              <span className="t-muted">{account.email}</span>
+            </button>
+          ))}
         </div>
       </div>
-
-      <div className="auth__aside">
-        <img src={IMAGES.adminSignIn} alt="" />
-        <div className="auth__aside-content">
-          <p className="auth__aside-quote">Every seat you fill is a car you take off the road.</p>
-          <div className="auth__aside-meta">
-            <div>
-              <div className="auth__aside-stat-value">Organization</div>
-              <div className="auth__aside-stat-label">Scoped access</div>
-            </div>
-            <div>
-              <div className="auth__aside-stat-value">Audited</div>
-              <div className="auth__aside-stat-label">Every change logged</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </AuthLayout>
   );
 }

@@ -39,7 +39,11 @@ export function CardHeader({
     <header className={cx('card-header', className)}>
       <div className="grow">
         <h2>{title}</h2>
-        {lead ? <p className="t-caption" style={{ marginTop: 2 }}>{lead}</p> : null}
+        {lead ? (
+          <p className="t-caption" style={{ marginTop: 2 }}>
+            {lead}
+          </p>
+        ) : null}
       </div>
       {actions ? <div className="card-header__actions">{actions}</div> : null}
     </header>
@@ -127,7 +131,11 @@ export function SectionHeading({
         <h2 className="t-subtitle">{title}</h2>
         {lead ? <p className="t-caption">{lead}</p> : null}
       </div>
-      {actions ? <div className="row" style={{ gap: 'var(--space-2)' }}>{actions}</div> : null}
+      {actions ? (
+        <div className="row" style={{ gap: 'var(--space-2)' }}>
+          {actions}
+        </div>
+      ) : null}
     </div>
   );
 }

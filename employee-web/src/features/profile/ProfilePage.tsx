@@ -145,7 +145,7 @@ export function ProfilePage() {
         actions={<AccountStatusBadge status={data.status} />}
       />
 
-      <div className="grid grid-2" style={{ gridTemplateColumns: '1.15fr 1fr', alignItems: 'start' }}>
+      <div className="grid grid-split-tight" style={{ alignItems: 'start' }}>
         <div className="stack-lg">
           <Card>
             <CardHeader title="Account" lead="Your name and how colleagues reach you" />
@@ -282,10 +282,15 @@ export function ProfilePage() {
             <CardHeader title="Privacy" />
             <CardBody className="stack">
               <p className="t-caption">
-                Colleagues in {data.organizationName} can see your name, department and the vehicle on a ride you
-                publish. Your phone number is only shared once a seat is confirmed.
+                Colleagues in {data.organizationName} can see your name, department and the vehicle on a ride
+                you publish. Your phone number is only shared once a seat is confirmed.
               </p>
-              <a className="btn btn-secondary" href={`${config.webUrl}#safety`} target="_blank" rel="noreferrer">
+              <a
+                className="btn btn-secondary"
+                href={`${config.webUrl}#safety`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Icon name="shield" size={16} />
                 How we handle your data
                 <Icon name="external" size={13} />

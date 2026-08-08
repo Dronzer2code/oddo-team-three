@@ -1,63 +1,63 @@
-import { Icon, type IconName } from '@carpool/ui';
+import { IMAGES } from '@carpool/ui';
+import { config } from '../lib/config';
 
-const FEATURES: Array<{ icon: IconName; title: string; text: string }> = [
+const CAPABILITIES = [
   {
-    icon: 'users',
-    title: 'Employee access control',
-    text: 'Invite, activate, suspend or deactivate. A suspended employee cannot publish or request a ride — enforced on the server, not just hidden in the interface.',
+    title: 'Access control',
+    text: 'Activate, suspend or reactivate an employee and the change takes effect on the next request — enforced in the API, not just hidden in the interface.',
   },
   {
-    icon: 'car',
-    title: 'Vehicle register',
-    text: 'Approve vehicles before they carry colleagues. Registration numbers are unique per organization, and retiring a vehicle never erases its trip history.',
+    title: 'Cost configuration',
+    text: 'Fuel price, running cost and vehicle efficiency are versioned with effective dates. Completed trips keep the rate that applied on the day.',
   },
   {
-    icon: 'fuel',
-    title: 'Versioned cost configuration',
-    text: 'Fuel price, running cost and fuel efficiency are versioned with effective dates. Yesterday’s report does not move when today’s price changes.',
-  },
-  {
-    icon: 'chart',
-    title: 'Participation you can act on',
-    text: 'Who published, who requested, who actually travelled — weekly and monthly, with the participation rate for the period.',
-  },
-  {
-    icon: 'trend',
-    title: 'Cost and distance reporting',
-    text: 'Trips, distance, fuel, cost per kilometre, cost by vehicle and driver activity. Canceled rides are counted separately and never inflate the numbers.',
-  },
-  {
-    icon: 'history',
-    title: 'Full audit history',
-    text: 'Every access change, vehicle decision and configuration edit is recorded with the actor, the timestamp and the before and after values.',
+    title: 'Reporting and audit',
+    text: 'Distance, litres, cost per kilometre and participation by period, with a full audit log of every administrative change.',
   },
 ];
 
+/**
+ * Benefits for companies, over the reference's full-bleed road photograph with
+ * a forest wash: eyebrow and heading left, action right, three columns beneath.
+ */
 export function ForCompanies() {
   return (
-    <section className="section section--ink" id="companies">
-      <div className="section__inner" style={{ padding: '0 var(--site-gutter)' }}>
-        <div className="section__head">
-          <span className="eyebrow">For companies</span>
-          <h2 className="section__title" style={{ color: 'var(--color-fg-inverse)' }}>
-            An operations console, not a second employee app.
-          </h2>
-          <p className="section__lead">
-            The admin panel does the four things a transport programme actually needs: control access, keep
-            the vehicle register honest, configure cost, and report on it.
-          </p>
+    <section className="band band--forest on-photo" id="companies">
+      <div className="band__photo band__photo--soft" aria-hidden="true">
+        <img src={IMAGES.openRoad} alt="" />
+      </div>
+      <div className="band__inner">
+        <div className="section-head">
+          <div className="section-head__text">
+            <span className="eyebrow">For companies</span>
+            <h2 className="section-head__title" style={{ marginTop: 'var(--space-4)' }}>
+              Run it as an organisation, not an app install.
+            </h2>
+          </div>
+          <a className="btn btn-accent" href={`${config.adminUrl}/login`}>
+            Open the admin panel
+          </a>
         </div>
 
-        <div className="feature-grid">
-          {FEATURES.map((feature) => (
-            <article className="feature" key={feature.title}>
-              <span className="feature__icon">
-                <Icon name={feature.icon} size={17} />
-              </span>
-              <h3 className="feature__title" style={{ color: 'var(--color-fg-inverse)' }}>
-                {feature.title}
-              </h3>
-              <p className="feature__text">{feature.text}</p>
+        <div className="service-grid">
+          {CAPABILITIES.map((capability) => (
+            <article key={capability.title}>
+              <h3 className="service__title">{capability.title}</h3>
+              <p className="service__text">{capability.text}</p>
+              <a className="link-arrow" href="#contact">
+                Book a walkthrough
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
             </article>
           ))}
         </div>

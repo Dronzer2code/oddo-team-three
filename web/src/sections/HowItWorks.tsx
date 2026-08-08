@@ -1,46 +1,86 @@
-const STEPS = [
-  {
-    index: 'Step 01',
-    title: 'Your company invites the team',
-    text: 'An administrator invites employees or shares the organization code. Nobody outside the company can join, and access can be suspended at any time.',
-  },
-  {
-    index: 'Step 02',
-    title: 'Drivers publish the commute they already make',
-    text: 'Pick the vehicle, the route and how many seats are free. The estimated cost per seat is calculated from the company fuel and running-cost configuration.',
-  },
-  {
-    index: 'Step 03',
-    title: 'Colleagues request a seat',
-    text: 'Passengers search by area, date and time, then request a seat. The driver accepts or declines — no group chats, no guessing.',
-  },
-  {
-    index: 'Step 04',
-    title: 'The trip closes the loop',
-    text: 'Start the trip, complete it with the real distance, and the cost split is settled between colleagues. The company sees participation and cost the same day.',
-  },
+import { DIAGRAM, Icon, VEHICLE_RENDER } from '@carpool/ui';
+
+const SOURCES = ['Own vehicle', 'Company pool car', 'Shared household car'];
+const OUTCOMES = [
+  'Daily commute',
+  'Shift handover',
+  'Campus shuttle',
+  'Client visit',
+  'Airport run',
+  'Late departure',
+  'Site inspection',
+  'Team offsite',
 ];
 
+/**
+ * How it works, on the reference's inset panel: a centred statement with an
+ * inline pictorial, then a left-to-right diagram — vehicle sources feed the
+ * matching service, which produces the trips employees actually take.
+ */
 export function HowItWorks() {
   return (
-    <section className="section" id="how">
-      <div className="section__head">
-        <span className="eyebrow">How it works</span>
-        <h2 className="section__title">Four steps. No coordination overhead.</h2>
-        <p className="section__lead">
-          The whole product is one loop: publish, request, accept, complete. Everything the company needs
-          for reporting falls out of that loop automatically.
-        </p>
-      </div>
+    <section
+      id="how"
+      style={{
+        background: 'var(--color-bg)',
+        paddingBlock: 'var(--panel-inset)',
+      }}
+    >
+      <div className="panel panel--faint">
+        <div className="panel__inner">
+          <div className="section-head section-head--center">
+            <span className="eyebrow">How RideSync works</span>
+            <div className="section-head__text">
+              <h2 className="section-head__title" style={{ fontSize: 'clamp(1.75rem, 3.4vw, 2.5rem)' }}>
+                An employee publishes the drive they were making anyway, and RideSync fills the empty
+                <span className="inline-mark">
+                  <Icon name="seat" size={22} />
+                </span>
+                seats.
+              </h2>
+            </div>
+          </div>
 
-      <div className="steps">
-        {STEPS.map((step) => (
-          <article className="step" key={step.index}>
-            <div className="step__index">{step.index}</div>
-            <h3 className="step__title">{step.title}</h3>
-            <p className="step__text">{step.text}</p>
-          </article>
-        ))}
+          <div className="flow">
+            <div className="flow__group">
+              <div className="flow__note">
+                <h3 className="flow__note-title">Vehicle register</h3>
+                <p className="flow__note-text">
+                  Only vehicles the organisation has marked active can be selected for a new ride.
+                </p>
+              </div>
+              <img className="flow__branch" src={DIAGRAM.branch} alt="" aria-hidden="true" />
+              <div className="flow__stack">
+                {SOURCES.map((source) => (
+                  <span className="chip chip--white" key={source}>
+                    {source}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <img className="flow__arrow" src={DIAGRAM.arrow} alt="" aria-hidden="true" />
+
+            <div className="flow__group flow__group--forest">
+              <div className="flow__card">
+                Matching service
+                <img src={VEHICLE_RENDER.topDown} alt="" aria-hidden="true" />
+              </div>
+            </div>
+
+            <img className="flow__arrow" src={DIAGRAM.arrow} alt="" aria-hidden="true" />
+
+            <div className="flow__group flow__group--stack">
+              <div className="flow__matrix">
+                {OUTCOMES.map((outcome) => (
+                  <span className="chip chip--white" key={outcome}>
+                    {outcome}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

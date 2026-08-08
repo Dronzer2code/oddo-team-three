@@ -75,7 +75,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(result.user);
   }, []);
 
-  const value = useMemo<AuthContextValue>(() => ({ user, ready, signIn, signOut }), [user, ready, signIn, signOut]);
+  const value = useMemo<AuthContextValue>(
+    () => ({ user, ready, signIn, signOut }),
+    [user, ready, signIn, signOut],
+  );
 
   if (!ready) return <Splash label="RideSync Admin" />;
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -37,7 +37,10 @@ export function TripsPage() {
 
   return (
     <>
-      <PageHeader title="Trips" lead="Every journey you have driven or ridden, with its distance and your share." />
+      <PageHeader
+        title="Trips"
+        lead="Every journey you have driven or ridden, with its distance and your share."
+      />
 
       {trips.error ? (
         <Card>
@@ -117,7 +120,9 @@ export function TripsPage() {
                         <td className="is-numeric">
                           {trip.viewerShare !== null ? formatMoney(trip.viewerShare, trip.currency) : '—'}
                         </td>
-                        <td className="t-caption t-nowrap">{formatDate(trip.completedAt ?? trip.startedAt)}</td>
+                        <td className="t-caption t-nowrap">
+                          {formatDate(trip.completedAt ?? trip.startedAt)}
+                        </td>
                         <td>
                           <div className="table__actions">
                             <Link className="btn btn-ghost btn-sm" to={`/trips/${trip.id}`}>

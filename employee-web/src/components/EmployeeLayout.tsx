@@ -59,12 +59,11 @@ export function EmployeeLayout() {
     <div className="app-shell has-tabbar">
       <aside className={sidebarOpen ? 'main-sidebar is-open' : 'main-sidebar'}>
         <div className="main-sidebar__brand">
-          <span className="main-sidebar__brand-mark">
-            <Icon name="logo" size={16} />
-          </span>
           <span className="main-sidebar__brand-text">
-            <span className="main-sidebar__brand-name">RideSync</span>
-            <span className="main-sidebar__brand-sub">{user?.organizationName}</span>
+            <span className="main-sidebar__brand-name">ridesync</span>
+            <span className="main-sidebar__brand-sub" title={user?.organizationName}>
+              {user?.organizationName ?? 'Commute'}
+            </span>
           </span>
         </div>
 
@@ -88,7 +87,10 @@ export function EmployeeLayout() {
           ))}
 
           <div className="main-sidebar__section">You</div>
-          <NavLink to="/activity" className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}>
+          <NavLink
+            to="/activity"
+            className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
+          >
             <span className="nav-link__icon">
               <Icon name="bell" size={16} />
             </span>
@@ -128,7 +130,9 @@ export function EmployeeLayout() {
 
           <Link className="btn btn-ghost btn-sm" to="/activity" aria-label="Activity">
             <Icon name="bell" size={17} />
-            {pendingCount > 0 ? <span className="badge badge--accent badge--plain">{pendingCount}</span> : null}
+            {pendingCount > 0 ? (
+              <span className="badge badge--accent badge--plain">{pendingCount}</span>
+            ) : null}
           </Link>
 
           <Link className="btn btn-accent btn-sm" to="/rides/new">
@@ -180,7 +184,10 @@ export function EmployeeLayout() {
               requesting rides is disabled until an administrator restores access.
             </Alert>
           ) : null}
-          <Outlet />
+          {/* Keyed on the path so every navigation replays the entrance. */}
+          <div className="page" key={location.pathname}>
+            <Outlet />
+          </div>
         </main>
       </div>
 
@@ -198,7 +205,10 @@ export function EmployeeLayout() {
             {item.label === 'Find a ride' ? 'Find' : item.label === 'My rides' ? 'Rides' : item.label}
           </NavLink>
         ))}
-        <NavLink to="/profile" className={({ isActive }) => (isActive ? 'tabbar__link is-active' : 'tabbar__link')}>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) => (isActive ? 'tabbar__link is-active' : 'tabbar__link')}
+        >
           <span className="tabbar__icon">
             <Icon name="user" size={18} />
           </span>

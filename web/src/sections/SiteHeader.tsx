@@ -1,26 +1,25 @@
-import { Button } from '@carpool/ui';
 import { Brand } from '../components/Brand';
 import { config } from '../lib/config';
 
+/**
+ * Sits transparently over the forest hero, exactly as the reference does:
+ * wordmark left, centred navigation, one mint pill action right.
+ */
 export function SiteHeader() {
   return (
-    <header className="site-header" id="top">
+    <header className="site-header">
       <div className="site-header__inner">
         <Brand />
         <nav className="site-nav" aria-label="Primary">
           <a href="#how">How it works</a>
           <a href="#employees">For employees</a>
           <a href="#companies">For companies</a>
-          <a href="#safety">Safety</a>
-          <a href="#contact">Contact</a>
+          <a href="#reviews">Reviews</a>
         </nav>
         <div className="site-header__actions">
-          <Button variant="ghost" size="sm" onClick={() => window.location.assign(`${config.adminUrl}/login`)}>
-            Admin sign in
-          </Button>
-          <Button variant="primary" size="sm" iconAfter="arrowRight" onClick={() => window.location.assign(`${config.employeeUrl}/login`)}>
-            Employee sign in
-          </Button>
+          <a className="btn btn-accent" href={`${config.employeeUrl}/login`}>
+            Start carpooling
+          </a>
         </div>
       </div>
     </header>

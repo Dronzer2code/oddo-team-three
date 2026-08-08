@@ -68,7 +68,12 @@ export function ParticipationPage() {
                 </span>
               }
             />
-            <Stat label="Published a ride" value={formatNumber(data.publishers)} icon="car" foot={<span>as driver</span>} />
+            <Stat
+              label="Published a ride"
+              value={formatNumber(data.publishers)}
+              icon="car"
+              foot={<span>as driver</span>}
+            />
             <Stat
               label="Requested a seat"
               value={formatNumber(data.requesters)}
@@ -90,7 +95,9 @@ export function ParticipationPage() {
                 {data.weekly.every((point) => point.participants === 0) ? (
                   <EmptyState icon="chart" title="No weekly activity yet" />
                 ) : (
-                  <BarChart points={data.weekly.map((point) => ({ label: point.label, value: point.participants }))} />
+                  <BarChart
+                    points={data.weekly.map((point) => ({ label: point.label, value: point.participants }))}
+                  />
                 )}
               </CardBody>
             </Card>
@@ -100,7 +107,9 @@ export function ParticipationPage() {
                 {data.monthly.every((point) => point.trips === 0) ? (
                   <EmptyState icon="chart" title="No monthly activity yet" />
                 ) : (
-                  <BarChart points={data.monthly.map((point) => ({ label: point.label, value: point.trips }))} />
+                  <BarChart
+                    points={data.monthly.map((point) => ({ label: point.label, value: point.trips }))}
+                  />
                 )}
               </CardBody>
             </Card>
