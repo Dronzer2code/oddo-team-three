@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Icon, type IconName } from '../icons';
 import { cx } from './primitives';
 
@@ -8,14 +8,20 @@ export function Card({
   children,
   className,
   interactive,
+  style,
   as: Tag = 'section',
 }: {
   children: ReactNode;
   className?: string;
   interactive?: boolean;
+  style?: CSSProperties;
   as?: 'section' | 'div' | 'article';
 }) {
-  return <Tag className={cx('card', interactive && 'card--interactive', className)}>{children}</Tag>;
+  return (
+    <Tag className={cx('card', interactive && 'card--interactive', className)} style={style}>
+      {children}
+    </Tag>
+  );
 }
 
 export function CardHeader({
