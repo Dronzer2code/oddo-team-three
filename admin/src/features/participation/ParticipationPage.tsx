@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { formatDistance, formatNumber, toLocalDateInput } from '@carpool/shared';
 import {
   BarChart,
+  DateField,
   Button,
   Card,
   CardBody,
   CardHeader,
   EmptyState,
   ErrorState,
-  Input,
   Meter,
   PageHeader,
   Skeleton,
@@ -39,8 +39,8 @@ export function ParticipationPage() {
         lead="An active participant published, requested or completed a ride inside the selected period."
         actions={
           <div className="row" style={{ gap: 'var(--space-2)', alignItems: 'flex-end' }}>
-            <Input label="From" type="date" value={from} onChange={(event) => setFrom(event.target.value)} />
-            <Input label="To" type="date" value={to} onChange={(event) => setTo(event.target.value)} />
+            <DateField label="From" value={from} onChange={(event) => setFrom(event.target.value)} />
+            <DateField label="To" value={to} onChange={(event) => setTo(event.target.value)} />
             <Button variant="secondary" icon="refresh" onClick={participation.reload}>
               Apply
             </Button>

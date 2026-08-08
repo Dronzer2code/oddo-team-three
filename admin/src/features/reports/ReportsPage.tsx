@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TRIP_STATUS, formatDistance, formatMoney, formatNumber, toLocalDateInput } from '@carpool/shared';
 import {
   BarChart,
+  DateField,
   Button,
   Card,
   CardBody,
@@ -9,7 +10,6 @@ import {
   EmptyState,
   ErrorState,
   Icon,
-  Input,
   PageHeader,
   Plate,
   Select,
@@ -112,8 +112,8 @@ export function ReportsPage() {
 
       <Card>
         <div className="filter-bar">
-          <Input label="From" type="date" value={from} onChange={(event) => setFrom(event.target.value)} />
-          <Input label="To" type="date" value={to} onChange={(event) => setTo(event.target.value)} />
+          <DateField label="From" value={from} onChange={(event) => setFrom(event.target.value)} />
+          <DateField label="To" value={to} onChange={(event) => setTo(event.target.value)} />
           <div className="form-group">
             <span className="form-label">Quick range</span>
             <div className="btn-group">

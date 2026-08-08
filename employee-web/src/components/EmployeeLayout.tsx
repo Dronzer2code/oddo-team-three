@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { ACCOUNT_STATUS } from '@carpool/shared';
-import { Alert, Avatar, Icon, IconButton, type IconName } from '@carpool/ui';
+import { Alert, Icon, type IconName } from '@carpool/ui';
 import { useAuth } from '../lib/auth';
-import { api, config } from '../lib/api';
+import { api } from '../lib/api';
 import { useApi } from '../lib/hooks';
 
 interface NavItem {
@@ -32,8 +32,17 @@ export function EmployeeLayout() {
   const { user, signOut } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [minimized, setMinimized] = useState(() => {
+    return localStorage.getItem('employee_sidebar_minimized') === 'true';
+  });
+
+  const toggleMinimize = () => {
+    setMinimized((prev) => {
+      const next = !prev;
+      localStorage.setItem('employee_sidebar_minimized', String(next));
+      return next;
+    });
+  };
 
   // Pending seat requests drive the badge on "My rides" and Activity.
   const pending = useApi(() => api.employee.rides.incomingRequests(), [location.pathname]);
@@ -41,30 +50,28 @@ export function EmployeeLayout() {
 
   useEffect(() => {
     setSidebarOpen(false);
-    setMenuOpen(false);
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onClick = (event: MouseEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
-    };
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
-  }, [menuOpen]);
 
   const suspended = user?.status === ACCOUNT_STATUS.SUSPENDED;
 
   return (
-    <div className="app-shell has-tabbar">
-      <aside className={sidebarOpen ? 'main-sidebar is-open' : 'main-sidebar'}>
+    <div className={`app-shell has-tabbar ${minimized ? 'is-sidebar-minimized' : ''}`}>
+      <aside className={`main-sidebar ${sidebarOpen ? 'is-open' : ''} ${minimized ? 'is-minimized' : ''}`}>
         <div className="main-sidebar__brand">
           <span className="main-sidebar__brand-text">
             <span className="main-sidebar__brand-name">ridesync</span>
-            <span className="main-sidebar__brand-sub" title={user?.organizationName}>
+            <span className="main-sidebar__brand-sub">
               {user?.organizationName ?? 'Commute'}
             </span>
           </span>
+          <button
+            className="main-sidebar__toggle"
+            onClick={toggleMinimize}
+            aria-label={minimized ? 'Expand menu' : 'Minimize menu'}
+            data-tooltip={minimized ? 'Expand menu' : 'Minimize menu'}
+          >
+            <Icon name="menu" size={18} />
+          </button>
         </div>
 
         <nav className="main-sidebar__nav" aria-label="Sections">
@@ -75,11 +82,12 @@ export function EmployeeLayout() {
               to={item.to}
               end={item.to === '/rides'}
               className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
+              data-tooltip={minimized ? item.label : undefined}
             >
               <span className="nav-link__icon">
                 <Icon name={item.icon} size={16} />
               </span>
-              {item.label}
+              <span className="nav-link__label">{item.label}</span>
               {item.to === '/my-rides' && pendingCount > 0 ? (
                 <span className="nav-link__badge">{pendingCount}</span>
               ) : null}
@@ -90,93 +98,44 @@ export function EmployeeLayout() {
           <NavLink
             to="/activity"
             className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
+            data-tooltip={minimized ? 'Activity' : undefined}
           >
             <span className="nav-link__icon">
               <Icon name="bell" size={16} />
             </span>
-            Activity
+            <span className="nav-link__label">Activity</span>
             {pendingCount > 0 ? <span className="nav-link__badge">{pendingCount}</span> : null}
           </NavLink>
-          <NavLink to="/profile" className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
+            data-tooltip={minimized ? 'Profile and settings' : undefined}
+          >
             <span className="nav-link__icon">
               <Icon name="user" size={16} />
             </span>
-            Profile and settings
+            <span className="nav-link__label">Profile and settings</span>
           </NavLink>
         </nav>
 
         <div className="main-sidebar__footer">
-          <button className="nav-link" onClick={signOut} style={{ width: '100%' }}>
+          <button
+            className="nav-link"
+            onClick={signOut}
+            style={{ width: '100%' }}
+            data-tooltip={minimized ? 'Sign out' : undefined}
+          >
             <span className="nav-link__icon">
               <Icon name="logout" size={16} />
             </span>
-            Sign out
+            <span className="nav-link__label">Sign out</span>
           </button>
         </div>
       </aside>
 
       {sidebarOpen ? <div className="sidebar-scrim" onClick={() => setSidebarOpen(false)} /> : null}
 
-      <div className="main-panel">
-        <header className="topbar">
-          <IconButton
-            icon="menu"
-            label="Open navigation"
-            className="topbar__menu"
-            onClick={() => setSidebarOpen(true)}
-          />
-          <span className="topbar__title">{user?.organizationName}</span>
-          <span className="grow" />
-
-          <Link className="btn btn-ghost btn-sm" to="/activity" aria-label="Activity">
-            <Icon name="bell" size={17} />
-            {pendingCount > 0 ? (
-              <span className="badge badge--accent badge--plain">{pendingCount}</span>
-            ) : null}
-          </Link>
-
-          <Link className="btn btn-accent btn-sm" to="/rides/new">
-            <Icon name="plus" size={15} />
-            Publish
-          </Link>
-
-          <div className="dropdown" ref={menuRef}>
-            <button className="row" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen}>
-              <Avatar name={user?.name ?? 'You'} size="sm" />
-              <Icon name="chevronDown" size={14} />
-            </button>
-            {menuOpen ? (
-              <div className="dropdown__menu">
-                <div className="dropdown__header">
-                  <div className="t-medium">{user?.name}</div>
-                  <div className="t-caption">{user?.email}</div>
-                </div>
-                <Link className="dropdown__item" to="/profile">
-                  <Icon name="user" size={15} />
-                  Profile and settings
-                </Link>
-                <Link className="dropdown__item" to="/vehicles">
-                  <Icon name="car" size={15} />
-                  My vehicles
-                </Link>
-                <Link className="dropdown__item" to="/wallet">
-                  <Icon name="wallet" size={15} />
-                  Wallet
-                </Link>
-                <div className="dropdown__divider" />
-                <a className="dropdown__item" href={config.webUrl} target="_blank" rel="noreferrer">
-                  <Icon name="external" size={15} />
-                  About RideSync
-                </a>
-                <button className="dropdown__item dropdown__item--danger" onClick={signOut}>
-                  <Icon name="logout" size={15} />
-                  Sign out
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </header>
-
+      <div className={`main-panel ${minimized ? 'is-sidebar-minimized' : ''}`}>
         <main className="main-content" id="main">
           {suspended ? (
             <Alert tone="warning" className="animate-in">

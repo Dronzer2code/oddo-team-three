@@ -19,58 +19,18 @@ html {
 
 /* ------------------------------------------------------------- scrollbars */
 
-/* The default platform scrollbar is the one piece of chrome that gives a
-   designed page away, so it is restyled to the palette: a forest thumb on a
-   mint-tinted track, thin, no arrow buttons. Firefox gets the two-value
-   `scrollbar-color` form; WebKit gets the pseudo-elements. */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border-strong) transparent;
+/* Hide scrollbars globally while allowing scrolling */
+html,
+body,
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-accent-faint);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-border-strong);
-  border: 2px solid var(--color-accent-faint);
-  border-radius: var(--radius-pill);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-fg-faint);
-}
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Inside the forest sidebar the same scrollbar inverts. */
-.main-sidebar {
-  scrollbar-color: rgba(197, 237, 203, 0.32) transparent;
-}
-.main-sidebar ::-webkit-scrollbar-track,
-.main-sidebar__nav::-webkit-scrollbar-track {
-  background: transparent;
-}
-.main-sidebar ::-webkit-scrollbar-thumb,
-.main-sidebar__nav::-webkit-scrollbar-thumb {
-  background: rgba(197, 237, 203, 0.28);
-  border-color: transparent;
-}
-.main-sidebar ::-webkit-scrollbar-thumb:hover,
-.main-sidebar__nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(197, 237, 203, 0.46);
-}
-
-/* Scroll containers inside cards (wide tables) get a slimmer bar. */
-.table-responsive {
-  scrollbar-width: thin;
-}
-.table-responsive::-webkit-scrollbar {
-  height: 8px;
+*::-webkit-scrollbar {
+  display: none; /* WebKit (Chrome, Safari, Edge) */
+  width: 0;
+  height: 0;
 }
 
 body {
@@ -111,6 +71,62 @@ textarea,
 select {
   font: inherit;
   color: inherit;
+}
+
+/* Global Color Accent & Dropdown / Form Control Theme */
+:root,
+html,
+body,
+input,
+select,
+textarea,
+button {
+  accent-color: #1e5631 !important;
+  caret-color: #1e5631;
+}
+
+::selection {
+  background-color: rgba(197, 237, 203, 0.5);
+  color: #133020;
+}
+
+/* Styled option elements in select dropdowns */
+select option {
+  background-color: #ffffff;
+  color: #141412;
+  padding: 8px 12px;
+}
+
+select option:hover,
+select option:focus,
+select option:active,
+select option:checked {
+  background-color: #1e5631 !important;
+  color: #ffffff !important;
+  background: linear-gradient(#1e5631, #1e5631) !important;
+}
+
+/* Date and Time Picker Indicators and Inputs */
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'] {
+  accent-color: #1e5631 !important;
+  color-scheme: light;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(22%) sepia(35%) saturate(1100%) hue-rotate(95deg) brightness(85%) contrast(95%);
+  opacity: 0.8;
+  transition: opacity 0.15s ease, filter 0.15s ease;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator:hover,
+input[type='time']::-webkit-calendar-picker-indicator:hover,
+input[type='datetime-local']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
 button {

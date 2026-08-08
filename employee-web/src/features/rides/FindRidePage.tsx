@@ -4,15 +4,16 @@ import { VEHICLE_TYPE, VEHICLE_TYPE_LABEL, toLocalDateInput } from '@carpool/sha
 import {
   Button,
   Card,
+  DateField,
   EmptyState,
   ErrorState,
   Icon,
-  Input,
   PageHeader,
   Pagination,
   SearchInput,
   Select,
   SkeletonCards,
+  TimeField,
   resolveErrorCopy,
 } from '@carpool/ui';
 import { api } from '../../lib/api';
@@ -100,9 +101,9 @@ export function FindRidePage() {
               }}
             />
           </div>
-          <Input
+          <DateField
             label="Date"
-            type="date"
+            placeholder="Any day"
             min={toLocalDateInput()}
             value={date}
             onChange={(event) => {
@@ -110,18 +111,21 @@ export function FindRidePage() {
               setPage(1);
             }}
           />
-          <Input
+          <TimeField
             label="Leaving after"
-            type="time"
+            placeholder="Any time"
+            step={15}
             value={timeFrom}
             onChange={(event) => {
               setTimeFrom(event.target.value);
               setPage(1);
             }}
           />
-          <Input
+          <TimeField
             label="Leaving before"
-            type="time"
+            placeholder="Any time"
+            step={15}
+            min={timeFrom || undefined}
             value={timeTo}
             onChange={(event) => {
               setTimeTo(event.target.value);
