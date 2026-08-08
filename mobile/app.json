@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "RideSync",
+    "slug": "ridesync",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "ridesync",
+    "backgroundColor": "#F7F6F2",
+    "splash": {
+      "backgroundColor": "#F7F6F2",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ridesync.employee"
+    },
+    "android": {
+      "package": "com.ridesync.employee",
+      "adaptiveIcon": {
+        "backgroundColor": "#141412"
+      }
+    },
+    "extra": {
+      "apiUrl": "http://10.0.2.2:4000"
+    }
+  }
+}
