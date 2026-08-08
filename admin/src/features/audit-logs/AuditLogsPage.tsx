@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { AUDIT_ACTION_LABEL, formatDateTime, type AuditLogEntry } from '@carpool/shared';
 import {
   Badge,
+  DateField,
   Button,
   Card,
   EmptyState,
   ErrorState,
   Icon,
-  Input,
   Modal,
   PageHeader,
   Pagination,
@@ -116,18 +116,16 @@ export function AuditLogsPage() {
               setPage(1);
             }}
           />
-          <Input
+          <DateField
             label="From"
-            type="date"
             value={from}
             onChange={(event) => {
               setFrom(event.target.value);
               setPage(1);
             }}
           />
-          <Input
+          <DateField
             label="To"
-            type="date"
             value={to}
             onChange={(event) => {
               setTo(event.target.value);

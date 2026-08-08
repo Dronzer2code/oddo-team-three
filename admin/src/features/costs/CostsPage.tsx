@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { COST_CONFIG_TYPE, formatDate, formatMoney, formatNumber, toLocalDateInput } from '@carpool/shared';
 import {
   Alert,
+  DateField,
   Badge,
   Button,
   Card,
@@ -297,16 +298,16 @@ export function CostsPage() {
             />
           ) : null}
           <div className="form-row">
-            <Input
+            <DateField
               label="Effective from"
-              type="date"
+
               value={form.effectiveFrom}
               onChange={(event) => setForm({ ...form, effectiveFrom: event.target.value })}
               error={create.error?.fieldErrors.effectiveFrom}
             />
-            <Input
+            <DateField
               label="Effective until"
-              type="date"
+
               optional
               value={form.effectiveUntil}
               onChange={(event) => setForm({ ...form, effectiveUntil: event.target.value })}

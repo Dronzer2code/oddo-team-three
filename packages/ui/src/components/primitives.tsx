@@ -4,7 +4,6 @@ import {
   type ButtonHTMLAttributes,
   type InputHTMLAttributes,
   type ReactNode,
-  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
 } from 'react';
 import { Icon, type IconName } from '../icons';
@@ -181,46 +180,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   );
 });
 
-export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  error?: string | null;
-  hint?: string;
-  optional?: boolean;
-  options: Array<{ value: string; label: string; disabled?: boolean }>;
-  placeholder?: string;
-}
-
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
-  { label, error, hint, optional, options, placeholder, className, id, ...rest },
-  ref,
-) {
-  const generatedId = useId();
-  const selectId = id ?? generatedId;
-
-  const control = (
-    <select
-      ref={ref}
-      id={selectId}
-      className={cx('form-control', error && 'is-invalid', className)}
-      aria-invalid={error ? true : undefined}
-      {...rest}
-    >
-      {placeholder ? <option value="">{placeholder}</option> : null}
-      {options.map((option) => (
-        <option key={option.value} value={option.value} disabled={option.disabled}>
-          {option.label}
-        </option>
-      ))}
-    </select>
-  );
-
-  if (!label) return control;
-  return (
-    <Field label={label} htmlFor={selectId} error={error} hint={hint} optional={optional}>
-      {control}
-    </Field>
-  );
-});
+/* `Select`, `DateField` and `TimeField` live in ./pickers — the native
+   controls hand their popup to the operating system, which ignores every
+   token in tokens.css. */
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
