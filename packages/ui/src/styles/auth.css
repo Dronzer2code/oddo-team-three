@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Sign-in / onboarding screens, shared by the admin and employee apps.
+   Split layout: form on the left, monochrome automotive plate on the right.
+   ========================================================================== */
+
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  min-height: 100vh;
+}
+
+.auth__panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background: var(--color-bg);
+}
+
+.auth__inner {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.auth__title {
+  margin-top: var(--space-7);
+  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
+  font-weight: var(--weight-light);
+  letter-spacing: -0.028em;
+  line-height: 1.08;
+}
+
+.auth__lead {
+  margin-top: var(--space-3);
+  color: var(--color-fg-secondary);
+}
+
+.auth__form {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-7);
+}
+
+.auth__foot {
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-fg-secondary);
+}
+.auth__foot a {
+  font-weight: var(--weight-medium);
+  color: var(--color-fg);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.auth__aside {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+.auth__aside img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1) brightness(0.72);
+}
+.auth__aside-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  color: var(--color-fg-inverse);
+}
+.auth__aside-quote {
+  max-width: 30ch;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: var(--weight-light);
+  letter-spacing: -0.025em;
+  line-height: 1.14;
+}
+.auth__aside-meta {
+  margin-top: var(--space-5);
+  display: flex;
+  gap: var(--space-7);
+  flex-wrap: wrap;
+}
+.auth__aside-stat-value {
+  font-size: var(--text-metric-sm);
+  font-weight: var(--weight-light);
+}
+.auth__aside-stat-label {
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: rgba(251, 250, 247, 0.5);
+}
+
+.auth__demo {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+.auth__demo-title {
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+.auth__demo-list {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.auth__demo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: var(--text-caption);
+  text-align: left;
+  transition: border-color var(--duration-fast) var(--ease);
+}
+.auth__demo-row:hover {
+  border-color: var(--color-fg);
+}
+.auth__demo-role {
+  font-weight: var(--weight-medium);
+}
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+.alert--error {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+.alert--warning {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+.alert--success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+.alert--info {
+  background: var(--color-neutral-soft);
+  color: var(--color-fg-secondary);
+}
+.alert__icon {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+@media (max-width: 900px) {
+  .auth {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .auth__aside {
+    display: none;
+  }
+}
