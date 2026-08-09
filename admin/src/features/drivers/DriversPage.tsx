@@ -42,11 +42,11 @@ export function DriversPage() {
       <Alert tone="info" className="animate-in">
         <span>
           A driver is also a passenger on somebody else&apos;s ride. Access is controlled from{' '}
-          <Link to="/employees" className="t-medium">
+          <Link to="/admin/employees" className="t-medium">
             Employees
           </Link>
           , and vehicle approval from{' '}
-          <Link to="/vehicles" className="t-medium">
+          <Link to="/admin/vehicles" className="t-medium">
             Vehicles
           </Link>
           .
@@ -83,7 +83,7 @@ export function DriversPage() {
                   {items.map((driver) => (
                     <tr key={driver.employeeId}>
                       <td>
-                        <Link to={`/employees/${driver.employeeId}`}>
+                        <Link to={`/admin/employees/${driver.employeeId}`}>
                           <Identity name={driver.name} meta={driver.department ?? '—'} />
                         </Link>
                       </td>
@@ -95,7 +95,7 @@ export function DriversPage() {
                           {driver.vehicles.map((vehicle) => (
                             <div className="row" key={vehicle.id} style={{ gap: 'var(--space-2)' }}>
                               <Icon name="car" size={14} />
-                              <Link to={`/vehicles/${vehicle.id}`} className="t-caption t-medium">
+                              <Link to={`/admin/vehicles/${vehicle.id}`} className="t-caption t-medium">
                                 {vehicle.label}
                               </Link>
                               <Plate>{vehicle.registrationNumber}</Plate>

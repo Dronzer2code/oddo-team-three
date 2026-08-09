@@ -1,16 +1,23 @@
 import type {
+  AdminRideDetail,
+  AdminRideRequestRow,
+  AdminRideRow,
+  AdminTripRow,
   ApiResponse,
   AuditLogEntry,
   AuthSession,
   AuthUser,
+  Booking,
   CostConfiguration,
   DashboardSummary,
   DriverRow,
+  EmployeeApproval,
   EmployeeDetail,
   EmployeeHomeData,
   EmployeeProfile,
   EmployeeSummary,
   Invitation,
+  NotificationItem,
   Organization,
   OrganizationSettings,
   Paginated,
@@ -22,6 +29,7 @@ import type {
   TrendPoint,
   Trip,
   Vehicle,
+  VehicleApproval,
   VehicleDetail,
   WalletSummary,
 } from '@carpool/shared';
@@ -186,6 +194,8 @@ export function createApiClient(options: ApiClientOptions) {
         publish: (body: Record<string, unknown>) => request<Ride>('POST', '/api/employee/rides', { body }),
         cancel: (id: string) => request<Ride>('POST', `/api/employee/rides/${id}/cancel`, { body: {} }),
         incomingRequests: () => request<RideRequest[]>('GET', '/api/employee/rides/requests/incoming'),
+        /** The request queue for one ride — what the driver's Requests tab lists. */
+        requests: (rideId: string) => request<RideRequest[]>('GET', `/api/employee/rides/${rideId}/requests`),
         requestSeat: (rideId: string, body: { seats: number; note?: string }) =>
           request<RideRequest>('POST', `/api/employee/rides/${rideId}/requests`, { body }),
         respond: (rideId: string, requestId: string, action: 'accept' | 'reject') =>
@@ -212,6 +222,22 @@ export function createApiClient(options: ApiClientOptions) {
         wallet: () => request<WalletSummary>('GET', '/api/employee/payments'),
         settle: (id: string) => request<Payment>('POST', `/api/employee/payments/${id}/settle`, { body: {} }),
       },
+    },
+
+    /* -------------------------------------------------------- passenger */
+    /** Passenger-only resources. Ride discovery lives under `employee.rides`. */
+    passenger: {
+      bookings: {
+        list: (status?: string) => request<Booking[]>('GET', '/api/passenger/bookings', { query: { status } }),
+        get: (id: string) => request<Booking>('GET', `/api/passenger/bookings/${id}`),
+        cancel: (id: string) => request<Booking>('PATCH', `/api/passenger/bookings/${id}/cancel`, { body: {} }),
+      },
+      notifications: () => request<NotificationItem[]>('GET', '/api/passenger/notifications'),
+    },
+
+    /* ----------------------------------------------------------- driver */
+    driver: {
+      notifications: () => request<NotificationItem[]>('GET', '/api/driver/notifications'),
     },
 
     /* ------------------------------------------------------------ admin */
@@ -263,6 +289,40 @@ export function createApiClient(options: ApiClientOptions) {
       drivers: {
         list: (query?: Query) => request<Paginated<DriverRow>>('GET', '/api/admin/drivers', { query }),
       },
+
+      employeeApprovals: {
+        list: (query?: Query) => request<Paginated<EmployeeApproval>>('GET', '/api/admin/employee-approvals', { query }),
+        approve: (id: string, reason?: string) =>
+          request<EmployeeApproval>('POST', `/api/admin/employee-approvals/${id}/approve`, { body: { reason } }),
+        reject: (id: string, reason?: string) =>
+          request<EmployeeApproval>('POST', `/api/admin/employee-approvals/${id}/reject`, { body: { reason } }),
+      },
+
+      vehicleApprovals: {
+        list: (query?: Query) => request<Paginated<VehicleApproval>>('GET', '/api/admin/vehicle-approvals', { query }),
+        approve: (id: string, reason?: string) =>
+          request<VehicleApproval>('POST', `/api/admin/vehicle-approvals/${id}/approve`, { body: { reason } }),
+        reject: (id: string, reason?: string) =>
+          request<VehicleApproval>('POST', `/api/admin/vehicle-approvals/${id}/reject`, { body: { reason } }),
+      },
+
+      rides: {
+        list: (query?: Query) => request<Paginated<AdminRideRow>>('GET', '/api/admin/rides', { query }),
+        get: (id: string) => request<AdminRideDetail>('GET', `/api/admin/rides/${id}`),
+        cancel: (id: string, reason?: string) =>
+          request<AdminRideRow>('POST', `/api/admin/rides/${id}/cancel`, { body: { reason } }),
+      },
+
+      rideRequests: {
+        list: (query?: Query) => request<Paginated<AdminRideRequestRow>>('GET', '/api/admin/ride-requests', { query }),
+      },
+
+      trips: {
+        active: (query?: Query) => request<Paginated<AdminTripRow>>('GET', '/api/admin/active-trips', { query }),
+        completed: (query?: Query) => request<Paginated<AdminTripRow>>('GET', '/api/admin/completed-trips', { query }),
+      },
+
+      notifications: () => request<NotificationItem[]>('GET', '/api/admin/notifications'),
 
       organization: {
         get: () => request<{ organization: Organization; settings: OrganizationSettings }>('GET', '/api/admin/organization'),

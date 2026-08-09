@@ -309,6 +309,26 @@ employeeRidesRouter.post(
 /* Requests                                                            */
 /* ------------------------------------------------------------------ */
 
+/**
+ * GET /api/employee/rides/:id/requests — the request queue for one ride.
+ * Drivers see every request; anyone else sees only their own, so the endpoint
+ * cannot be used to enumerate who asked for a seat on someone else's ride.
+ */
+employeeRidesRouter.get(
+  '/:id/requests',
+  handler(async (req, res) => {
+    const actor = actorOf(req);
+    const rideId = parseId(req.params.id, 'ride id');
+    const ride = await loadRide(req.db, actor.organizationId, actor.id, rideId);
+
+    if (ride.viewer.isDriver) {
+      return ok(res, await loadRequests(req.db, rideId, true));
+    }
+    const own = await loadRequests(req.db, rideId, false);
+    return ok(res, own.filter((request) => request.passenger.id === actor.id));
+  }),
+);
+
 /** POST /api/employee/rides/:id/requests — request a seat. */
 employeeRidesRouter.post(
   '/:id/requests',

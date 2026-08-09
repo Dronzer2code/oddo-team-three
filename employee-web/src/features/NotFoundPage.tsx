@@ -11,7 +11,7 @@ export function NotFoundPage() {
           title="This road leads nowhere"
           text="The page you were looking for does not exist."
           action={
-            <Link className="btn btn-primary" to="/home">
+            <Link className="btn btn-primary" to="/passenger/home">
               Back to home
             </Link>
           }

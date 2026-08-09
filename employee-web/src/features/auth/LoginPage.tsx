@@ -48,7 +48,7 @@ export function LoginPage() {
     setBusy(true);
     try {
       await signIn(parsed.data.email, parsed.data.password);
-      navigate('/home', { replace: true });
+      navigate('/passenger/home', { replace: true });
     } catch (error) {
       setFailure(
         error instanceof ApiError

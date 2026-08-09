@@ -89,7 +89,7 @@ export function EmployeesPage() {
         title="Employees"
         lead="Everyone in your organization, their carpool participation and their access."
         actions={
-          <Link className="btn btn-primary" to="/invitations">
+          <Link className="btn btn-primary" to="/admin/invitations">
             <Icon name="plus" size={16} />
             Invite employees
           </Link>
@@ -202,7 +202,7 @@ export function EmployeesPage() {
                 </thead>
                 <tbody>
                   {items.map((employee) => (
-                    <tr key={employee.id} onClick={() => navigate(`/employees/${employee.id}`)}>
+                    <tr key={employee.id} onClick={() => navigate(`/admin/employees/${employee.id}`)}>
                       <td>
                         <Identity
                           name={employee.name}

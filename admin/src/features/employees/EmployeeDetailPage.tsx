@@ -110,7 +110,7 @@ export function EmployeeDetailPage() {
       <PageHeader
         title={data.name}
         lead={`${data.employeeCode ?? 'No employee ID'} · ${data.email}`}
-        breadcrumbs={[{ label: 'Employees', href: '/employees' }, { label: data.name }]}
+        breadcrumbs={[{ label: 'Employees', href: '/admin/employees' }, { label: data.name }]}
         renderLink={(crumb) => <Link to={crumb.href!}>{crumb.label}</Link>}
         actions={
           <>
@@ -249,7 +249,7 @@ export function EmployeeDetailPage() {
                           </td>
                           <td>
                             <div className="table__actions">
-                              <Link className="btn btn-ghost btn-sm" to={`/vehicles/${vehicle.id}`}>
+                              <Link className="btn btn-ghost btn-sm" to={`/admin/vehicles/${vehicle.id}`}>
                                 Open
                                 <Icon name="arrowRight" size={13} />
                               </Link>

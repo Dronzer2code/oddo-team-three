@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { Icon, type IconName } from '../icons';
 import { Button, IconButton, cx } from './primitives';
 
@@ -193,25 +194,36 @@ export function Modal({
   wide?: boolean;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') onCloseRef.current();
     };
     document.addEventListener('keydown', onKey);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    panelRef.current?.focus();
+
+    if (!panelRef.current?.contains(document.activeElement)) {
+      panelRef.current?.focus();
+    }
+
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = previousOverflow;
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
-  return (
+  /* Portalled to <body> deliberately. The scrim is `position: fixed`, and any
+     ancestor with a transform, filter or backdrop-filter would become its
+     containing block — confining the overlay to that ancestor's box and
+     leaving the rest of the viewport undimmed. Rendering at the document root
+     means no page can ever do that to a modal. */
+  return createPortal(
     <div
       className="modal-scrim"
       onMouseDown={(event) => {
@@ -236,7 +248,8 @@ export function Modal({
         {children ? <div className="modal__body">{children}</div> : null}
         {footer ? <footer className="modal__footer">{footer}</footer> : null}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

@@ -27,6 +27,7 @@ import {
   useToast,
 } from '@carpool/ui';
 import { api } from '../../lib/api';
+import { RouteMap } from '../../components/RouteMap';
 import { useApi, useMutation } from '../../lib/hooks';
 import { useAuth } from '../../lib/auth';
 import { isOperational } from '../../lib/auth';
@@ -203,7 +204,7 @@ export function PublishRidePage() {
     });
     if (result) {
       toast.success('Ride published — colleagues can now request a seat');
-      navigate(`/rides/${result.id}`);
+      navigate(`/driver/rides/${result.id}`);
     }
   }
 
@@ -221,7 +222,7 @@ export function PublishRidePage() {
                 : 'Your account is pending activation by an administrator.'
             }
             action={
-              <Link className="btn btn-secondary" to="/home">
+              <Link className="btn btn-secondary" to="/driver/home">
                 Back to home
               </Link>
             }
@@ -260,7 +261,7 @@ export function PublishRidePage() {
                 : 'Register the car you drive to work. Once an administrator approves it you can offer the empty seats.'
             }
             action={
-              <Link className="btn btn-primary" to="/vehicles">
+              <Link className="btn btn-primary" to="/driver/vehicle">
                 <Icon name="plus" size={16} />
                 Manage my vehicles
               </Link>
@@ -291,7 +292,7 @@ export function PublishRidePage() {
             : 'One form. Nothing is offered to colleagues until you press publish.'
         }
         actions={
-          <Link className="btn btn-ghost" to="/rides">
+          <Link className="btn btn-ghost" to="/driver/rides">
             <Icon name="search" size={16} />
             Find a ride instead
           </Link>
@@ -339,6 +340,17 @@ export function PublishRidePage() {
                   placeholder="Park Street Office"
                 />
               </div>
+
+              {/* Route preview, so the driver sees the path before publishing
+                  it rather than after. */}
+              {form.startLocation.trim() && form.destination.trim() ? (
+                <RouteMap
+                  from={form.startLocation.trim()}
+                  to={form.destination.trim()}
+                  height={220}
+                  className="stack-tight"
+                />
+              ) : null}
             </section>
 
             <section className="form-section">
@@ -413,7 +425,7 @@ export function PublishRidePage() {
             <section className="form-section">
               <header className="form-section__head">
                 <h2 className="form-section__title">Vehicle</h2>
-                <Link className="t-caption" to="/vehicles">
+                <Link className="t-caption" to="/driver/vehicle">
                   Manage vehicles
                 </Link>
               </header>

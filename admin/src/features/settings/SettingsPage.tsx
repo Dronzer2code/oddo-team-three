@@ -124,15 +124,15 @@ export function SettingsPage() {
                 Organization-wide settings are separated from your personal account so they can be audited
                 independently.
               </p>
-              <Link className="btn btn-secondary" to="/organization">
+              <Link className="btn btn-secondary" to="/admin/organization">
                 <Icon name="building" size={16} />
                 Organization identity and policy
               </Link>
-              <Link className="btn btn-secondary" to="/costs">
+              <Link className="btn btn-secondary" to="/admin/costs">
                 <Icon name="fuel" size={16} />
                 Fuel and travel cost versions
               </Link>
-              <Link className="btn btn-secondary" to="/audit-logs">
+              <Link className="btn btn-secondary" to="/admin/audit-logs">
                 <Icon name="history" size={16} />
                 Audit logs
               </Link>

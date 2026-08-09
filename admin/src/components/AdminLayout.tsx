@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Avatar, Icon, IconButton, type IconName } from '@carpool/ui';
+import { useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Icon, type IconName } from '@carpool/ui';
 import { useAuth } from '../lib/auth';
-import { api, config } from '../lib/api';
+import { api } from '../lib/api';
 import { useApi } from '../lib/hooks';
 
 interface NavItem {
@@ -13,23 +13,35 @@ interface NavItem {
   badge?: 'pendingEmployees' | 'pendingVehicles';
 }
 
+/**
+ * The seventeen administrator tabs, in the order the platform contract lists
+ * them. Grouping is presentational only — the labels and their sequence are
+ * the contract's, and nothing may be added to or removed from this list.
+ */
 const OPERATIONS: NavItem[] = [
-  { to: '/dashboard', label: 'Dashboard', icon: 'chart' },
-  { to: '/employees', label: 'Employees', icon: 'users', badge: 'pendingEmployees' },
-  { to: '/invitations', label: 'Invitations', icon: 'mail' },
-  { to: '/vehicles', label: 'Vehicles', icon: 'car', badge: 'pendingVehicles' },
-  { to: '/drivers', label: 'Drivers', icon: 'user' },
+  { to: '/admin/dashboard', label: 'Dashboard', icon: 'chart' },
+  { to: '/admin/employees', label: 'Employees', icon: 'users' },
+  { to: '/admin/employee-approvals', label: 'Employee Approvals', icon: 'shield', badge: 'pendingEmployees' },
+  { to: '/admin/vehicles', label: 'Vehicles', icon: 'car' },
+  { to: '/admin/vehicle-approvals', label: 'Vehicle Approvals', icon: 'check', badge: 'pendingVehicles' },
+  { to: '/admin/drivers', label: 'Drivers', icon: 'user' },
+  { to: '/admin/rides', label: 'Rides', icon: 'route' },
+  { to: '/admin/ride-requests', label: 'Ride Requests', icon: 'seat' },
+  { to: '/admin/active-trips', label: 'Active Trips', icon: 'play' },
+  { to: '/admin/completed-trips', label: 'Completed Trips', icon: 'flag' },
 ];
 
 const CONFIGURATION: NavItem[] = [
-  { to: '/organization', label: 'Organization', icon: 'building' },
-  { to: '/costs', label: 'Costs', icon: 'fuel' },
+  { to: '/admin/organization', label: 'Organization', icon: 'building' },
+  { to: '/admin/costs', label: 'Costs', icon: 'fuel' },
 ];
 
 const INSIGHT: NavItem[] = [
-  { to: '/participation', label: 'Participation', icon: 'trend' },
-  { to: '/reports', label: 'Reports', icon: 'list' },
-  { to: '/audit-logs', label: 'Audit logs', icon: 'history' },
+  { to: '/admin/participation', label: 'Participation', icon: 'trend' },
+  { to: '/admin/reports', label: 'Reports', icon: 'list' },
+  { to: '/admin/notifications', label: 'Notifications', icon: 'bell' },
+  { to: '/admin/audit-logs', label: 'Audit Logs', icon: 'history' },
+  { to: '/admin/settings', label: 'Settings', icon: 'settings' },
 ];
 
 function NavSection({
@@ -81,8 +93,6 @@ export function AdminLayout() {
   const { user, signOut } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const [minimized, setMinimized] = useState(
     () => localStorage.getItem('admin_sidebar_minimized') === 'true',
   );
@@ -105,17 +115,7 @@ export function AdminLayout() {
 
   useEffect(() => {
     setSidebarOpen(false);
-    setMenuOpen(false);
   }, [location.pathname]);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onClick = (event: MouseEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) setMenuOpen(false);
-    };
-    document.addEventListener('mousedown', onClick);
-    return () => document.removeEventListener('mousedown', onClick);
-  }, [menuOpen]);
 
   const close = () => setSidebarOpen(false);
 
@@ -125,7 +125,7 @@ export function AdminLayout() {
         <div className="main-sidebar__brand">
           <span className="main-sidebar__brand-text">
             <span className="main-sidebar__brand-name">ridesync</span>
-            <span className="main-sidebar__brand-sub" title={user?.organizationName}>
+            <span className="main-sidebar__brand-sub">
               {user?.organizationName ?? 'Administration'}
             </span>
           </span>
@@ -164,17 +164,6 @@ export function AdminLayout() {
         </nav>
 
         <div className="main-sidebar__footer">
-          <NavLink
-            to="/settings"
-            className={({ isActive }) => (isActive ? 'nav-link is-active' : 'nav-link')}
-            onClick={close}
-            data-tooltip={minimized ? 'Admin settings' : undefined}
-          >
-            <span className="nav-link__icon">
-              <Icon name="settings" size={16} />
-            </span>
-            <span className="nav-link__label">Admin settings</span>
-          </NavLink>
           <button
             className="nav-link"
             onClick={signOut}
@@ -192,58 +181,6 @@ export function AdminLayout() {
       {sidebarOpen ? <div className="sidebar-scrim" onClick={close} /> : null}
 
       <div className={`main-panel ${minimized ? 'is-sidebar-minimized' : ''}`}>
-        <header className="topbar">
-          <IconButton
-            icon="menu"
-            label="Open navigation"
-            className="topbar__menu"
-            onClick={() => setSidebarOpen(true)}
-          />
-
-          <span className="topbar__title">Administration</span>
-
-          <span className="grow" />
-
-          <a
-            className="btn btn-ghost btn-sm topbar__optional"
-            href={config.employeeUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Employee app
-            <Icon name="external" size={13} />
-          </a>
-
-          <div className="dropdown" ref={menuRef}>
-            <button className="row" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen}>
-              <Avatar name={user?.name ?? 'Admin'} size="sm" ink />
-              <span className="t-caption t-medium topbar__optional">{user?.name}</span>
-              <Icon name="chevronDown" size={14} />
-            </button>
-            {menuOpen ? (
-              <div className="dropdown__menu">
-                <div className="dropdown__header">
-                  <div className="t-medium">{user?.name}</div>
-                  <div className="t-caption">{user?.email}</div>
-                </div>
-                <Link className="dropdown__item" to="/settings">
-                  <Icon name="settings" size={15} />
-                  Admin settings
-                </Link>
-                <Link className="dropdown__item" to="/organization">
-                  <Icon name="building" size={15} />
-                  Organization
-                </Link>
-                <div className="dropdown__divider" />
-                <button className="dropdown__item dropdown__item--danger" onClick={signOut}>
-                  <Icon name="logout" size={15} />
-                  Sign out
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </header>
-
         <main className="main-content" id="main">
           {/* Keyed on the path so every navigation replays the entrance. */}
           <div className="page" key={location.pathname}>

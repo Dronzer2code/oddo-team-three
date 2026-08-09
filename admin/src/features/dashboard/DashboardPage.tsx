@@ -55,7 +55,7 @@ export function DashboardPage() {
             >
               Refresh
             </Button>
-            <Link className="btn btn-primary" to="/reports">
+            <Link className="btn btn-primary" to="/admin/reports">
               <Icon name="list" size={16} />
               Open reports
             </Link>
@@ -96,7 +96,7 @@ export function DashboardPage() {
                 <>
                   <span>{formatNumber(data.vehicles.active)} active</span>
                   {data.vehicles.underReview > 0 ? (
-                    <Link to="/vehicles?status=under_review" className="t-medium">
+                    <Link to="/admin/vehicles?status=under_review" className="t-medium">
                       {data.vehicles.underReview} awaiting review
                     </Link>
                   ) : null}
@@ -198,7 +198,7 @@ export function DashboardPage() {
                     <span className="t-medium">{formatNumber(data.trips.inProgress)}</span>
                   </div>
                 </div>
-                <Link className="btn btn-secondary btn-sm" to="/participation">
+                <Link className="btn btn-secondary btn-sm" to="/admin/participation">
                   Participation detail
                   <Icon name="arrowRight" size={14} />
                 </Link>
@@ -212,7 +212,7 @@ export function DashboardPage() {
         <CardHeader
           title="Recent administrative activity"
           actions={
-            <Link className="btn btn-ghost btn-sm" to="/audit-logs">
+            <Link className="btn btn-ghost btn-sm" to="/admin/audit-logs">
               All audit logs
               <Icon name="arrowRight" size={14} />
             </Link>

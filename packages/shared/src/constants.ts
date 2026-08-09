@@ -53,6 +53,20 @@ export const RIDE_REQUEST_STATUS = {
 } as const;
 export type RideRequestStatus = (typeof RIDE_REQUEST_STATUS)[keyof typeof RIDE_REQUEST_STATUS];
 
+/**
+ * A booking is a passenger's view of a ride request. It carries one extra
+ * state the request row does not have — COMPLETED, which is an accepted
+ * request whose trip finished — so the My Bookings filters can be exact.
+ */
+export const BOOKING_STATUS = {
+  PENDING: 'pending',
+  CONFIRMED: 'confirmed',
+  REJECTED: 'rejected',
+  CANCELED: 'canceled',
+  COMPLETED: 'completed',
+} as const;
+export type BookingStatus = (typeof BOOKING_STATUS)[keyof typeof BOOKING_STATUS];
+
 export const TRIP_STATUS = {
   IN_PROGRESS: 'in_progress',
   COMPLETED: 'completed',
@@ -98,6 +112,8 @@ export const AUDIT_ACTION = {
   EMPLOYEE_INVITED: 'employee.invited',
   EMPLOYEE_INVITE_RESENT: 'employee.invite_resent',
   EMPLOYEE_INVITE_CANCELED: 'employee.invite_canceled',
+  EMPLOYEE_APPROVED: 'employee.approved',
+  EMPLOYEE_REJECTED: 'employee.rejected',
   EMPLOYEE_ACTIVATED: 'employee.activated',
   EMPLOYEE_SUSPENDED: 'employee.suspended',
   EMPLOYEE_REACTIVATED: 'employee.reactivated',
@@ -106,6 +122,9 @@ export const AUDIT_ACTION = {
   VEHICLE_CREATED: 'vehicle.created',
   VEHICLE_UPDATED: 'vehicle.updated',
   VEHICLE_STATUS_CHANGED: 'vehicle.status_changed',
+  VEHICLE_APPROVED: 'vehicle.approved',
+  VEHICLE_REJECTED: 'vehicle.rejected',
+  RIDE_CANCELED: 'ride.canceled',
   ORGANIZATION_SETTING_CHANGED: 'organization.setting_changed',
   COST_CONFIGURATION_CREATED: 'cost_configuration.created',
   COST_CONFIGURATION_CLOSED: 'cost_configuration.closed',
@@ -160,6 +179,14 @@ export const RIDE_REQUEST_STATUS_LABEL: Record<RideRequestStatus, string> = {
   canceled: 'Canceled',
 };
 
+export const BOOKING_STATUS_LABEL: Record<BookingStatus, string> = {
+  pending: 'Pending',
+  confirmed: 'Confirmed',
+  rejected: 'Rejected',
+  canceled: 'Canceled',
+  completed: 'Completed',
+};
+
 export const TRIP_STATUS_LABEL: Record<TripStatus, string> = {
   in_progress: 'In progress',
   completed: 'Completed',
@@ -178,6 +205,8 @@ export const AUDIT_ACTION_LABEL: Record<string, string> = {
   'employee.invited': 'Employee invited',
   'employee.invite_resent': 'Invitation resent',
   'employee.invite_canceled': 'Invitation canceled',
+  'employee.approved': 'Employee approved',
+  'employee.rejected': 'Employee rejected',
   'employee.activated': 'Employee activated',
   'employee.suspended': 'Employee suspended',
   'employee.reactivated': 'Employee reactivated',
@@ -186,6 +215,9 @@ export const AUDIT_ACTION_LABEL: Record<string, string> = {
   'vehicle.created': 'Vehicle created',
   'vehicle.updated': 'Vehicle updated',
   'vehicle.status_changed': 'Vehicle status changed',
+  'vehicle.approved': 'Vehicle approved',
+  'vehicle.rejected': 'Vehicle rejected',
+  'ride.canceled': 'Ride canceled',
   'organization.setting_changed': 'Organization setting changed',
   'cost_configuration.created': 'Cost configuration created',
   'cost_configuration.closed': 'Cost configuration closed',

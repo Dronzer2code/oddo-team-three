@@ -15,6 +15,10 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* Paint the root too: when a fixed-position scrim covers the viewport the
+     body box can be shorter than the scroll area, and an unpainted html
+     shows through as a white band. */
+  background: var(--color-bg);
 }
 
 /* ------------------------------------------------------------- scrollbars */

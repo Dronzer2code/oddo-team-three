@@ -4,6 +4,8 @@ import {
   COST_CONFIG_TYPE,
   DISTANCE_UNIT,
   PAGINATION,
+  RIDE_REQUEST_STATUS,
+  RIDE_STATUS,
   TRIP_STATUS,
   VEHICLE_STATUS,
   VEHICLE_TYPE,
@@ -248,6 +250,47 @@ export type AuditLogQuery = z.infer<typeof auditLogQuerySchema>;
 export const paginationQuerySchema = z.object({
   page: z.coerce.number().int().min(1).optional(),
   pageSize: z.coerce.number().int().min(1).max(PAGINATION.MAX_PAGE_SIZE).optional(),
+});
+
+/* --------------------------- admin: rides & trips ------------- */
+
+export const adminRideListQuerySchema = z.object({
+  search: trimmed(0, 120).optional(),
+  status: z.nativeEnum(RIDE_STATUS).optional(),
+  driverId: uuidSchema.optional(),
+  vehicleId: uuidSchema.optional(),
+  /** Calendar day (YYYY-MM-DD) in the organization's timezone. */
+  date: z.string().optional(),
+  page: z.coerce.number().int().min(1).optional(),
+  pageSize: z.coerce.number().int().min(1).max(PAGINATION.MAX_PAGE_SIZE).optional(),
+});
+export type AdminRideListQuery = z.infer<typeof adminRideListQuerySchema>;
+
+export const adminRideRequestQuerySchema = z.object({
+  search: trimmed(0, 120).optional(),
+  status: z.nativeEnum(RIDE_REQUEST_STATUS).optional(),
+  rideId: uuidSchema.optional(),
+  page: z.coerce.number().int().min(1).optional(),
+  pageSize: z.coerce.number().int().min(1).max(PAGINATION.MAX_PAGE_SIZE).optional(),
+});
+export type AdminRideRequestQuery = z.infer<typeof adminRideRequestQuerySchema>;
+
+export const adminTripListQuerySchema = z.object({
+  search: trimmed(0, 120).optional(),
+  driverId: uuidSchema.optional(),
+  from: z.string().optional(),
+  to: z.string().optional(),
+  page: z.coerce.number().int().min(1).optional(),
+  pageSize: z.coerce.number().int().min(1).max(PAGINATION.MAX_PAGE_SIZE).optional(),
+});
+export type AdminTripListQuery = z.infer<typeof adminTripListQuerySchema>;
+
+export const cancelRideSchema = z.object({
+  reason: trimmed(0, 300).optional(),
+});
+
+export const approvalDecisionSchema = z.object({
+  reason: trimmed(0, 300).optional(),
 });
 
 export const vehicleListQuerySchema = z.object({

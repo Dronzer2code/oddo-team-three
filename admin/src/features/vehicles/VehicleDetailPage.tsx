@@ -96,11 +96,11 @@ export function VehicleDetailPage() {
       <PageHeader
         title={`${data.make} ${data.model}`}
         lead={`Owned by ${data.ownerName}`}
-        breadcrumbs={[{ label: 'Vehicles', href: '/vehicles' }, { label: `${data.make} ${data.model}` }]}
+        breadcrumbs={[{ label: 'Vehicles', href: '/admin/vehicles' }, { label: `${data.make} ${data.model}` }]}
         renderLink={(crumb) => <Link to={crumb.href!}>{crumb.label}</Link>}
         actions={
           <>
-            <Link className="btn btn-secondary" to={`/employees/${data.ownerId}`}>
+            <Link className="btn btn-secondary" to={`/admin/employees/${data.ownerId}`}>
               <Icon name="user" size={16} />
               Open driver
             </Link>

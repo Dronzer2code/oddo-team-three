@@ -271,7 +271,7 @@ export function ProfilePage() {
             <CardHeader title="Vehicle" />
             <CardBody className="stack">
               <p className="t-caption">Register or retire the car you drive to work.</p>
-              <Link className="btn btn-secondary" to="/vehicles">
+              <Link className="btn btn-secondary" to="/driver/vehicle">
                 <Icon name="car" size={16} />
                 My vehicles
               </Link>

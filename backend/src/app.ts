@@ -14,6 +14,12 @@ import { employeeVehiclesRouter } from './modules/vehicles/employee.router.js';
 import { employeeRidesRouter } from './modules/rides/router.js';
 import { employeeTripsRouter } from './modules/trips/router.js';
 import { employeePaymentsRouter } from './modules/payments/employee.router.js';
+import { passengerBookingsRouter } from './modules/bookings/router.js';
+import {
+  adminNotificationsRouter,
+  driverNotificationsRouter,
+  passengerNotificationsRouter,
+} from './modules/notifications/router.js';
 
 import { adminDashboardRouter } from './modules/reports/dashboard.router.js';
 import { adminParticipationRouter } from './modules/reports/participation.router.js';
@@ -25,6 +31,10 @@ import { adminDriversRouter } from './modules/drivers/admin.router.js';
 import { adminOrganizationRouter } from './modules/organizations/admin.router.js';
 import { adminCostsRouter } from './modules/costs/admin.router.js';
 import { adminAuditLogsRouter } from './modules/audit-logs/admin.router.js';
+import { adminRideRequestsRouter, adminRidesRouter } from './modules/rides/admin.router.js';
+import { adminActiveTripsRouter, adminCompletedTripsRouter } from './modules/trips/admin.router.js';
+import { adminEmployeeApprovalsRouter } from './modules/employees/approvals.router.js';
+import { adminVehicleApprovalsRouter } from './modules/vehicles/approvals.router.js';
 
 /**
  * The database is injected rather than imported so tests can run each suite
@@ -72,12 +82,29 @@ export function createApp(db: Database) {
   app.use('/api/employee/trips', employeeTripsRouter);
   app.use('/api/employee/payments', employeePaymentsRouter);
 
+  /* --------------------------- passenger -------------------------- */
+  /* Passenger-only resources. Ride search, ride detail and seat requests are
+     served by the employee ride module above — they are the same records and
+     the same authorization; only these two have a passenger-specific shape. */
+  app.use('/api/passenger/bookings', passengerBookingsRouter);
+  app.use('/api/passenger/notifications', passengerNotificationsRouter);
+
+  /* ----------------------------- driver --------------------------- */
+  app.use('/api/driver/notifications', driverNotificationsRouter);
+
   /* ----------------------------- admin ---------------------------- */
   app.use('/api/admin/dashboard', adminDashboardRouter);
   app.use('/api/admin/employees', adminEmployeesRouter);
+  app.use('/api/admin/employee-approvals', adminEmployeeApprovalsRouter);
   app.use('/api/admin/invitations', adminInvitationsRouter);
   app.use('/api/admin/vehicles', adminVehiclesRouter);
+  app.use('/api/admin/vehicle-approvals', adminVehicleApprovalsRouter);
   app.use('/api/admin/drivers', adminDriversRouter);
+  app.use('/api/admin/rides', adminRidesRouter);
+  app.use('/api/admin/ride-requests', adminRideRequestsRouter);
+  app.use('/api/admin/active-trips', adminActiveTripsRouter);
+  app.use('/api/admin/completed-trips', adminCompletedTripsRouter);
+  app.use('/api/admin/notifications', adminNotificationsRouter);
   app.use('/api/admin/organization', adminOrganizationRouter);
   app.use('/api/admin/costs', adminCostsRouter);
   app.use('/api/admin/participation', adminParticipationRouter);

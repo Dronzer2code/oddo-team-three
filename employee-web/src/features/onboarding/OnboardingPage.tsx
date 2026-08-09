@@ -50,7 +50,7 @@ export function OnboardingPage() {
       await api.employee.profile.update(parsed.data);
       await refresh();
       toast.success('Profile complete');
-      navigate('/home', { replace: true });
+      navigate('/passenger/home', { replace: true });
     } catch (error) {
       if (error instanceof ApiError) {
         setErrors(error.fieldErrors);

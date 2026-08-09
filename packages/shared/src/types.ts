@@ -1,5 +1,6 @@
 import type {
   AccountStatus,
+  BookingStatus,
   CostConfigType,
   DistanceUnit,
   InvitationStatus,
@@ -216,6 +217,36 @@ export interface RideRequest {
   seats: number;
   status: RideRequestStatus;
   note: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * The passenger-side projection of a seat request: everything the booking
+ * card has to show, resolved server-side so the client never joins rides,
+ * drivers and vehicles itself.
+ */
+export interface Booking {
+  id: string;
+  organizationId: string;
+  rideId: string;
+  passengerId: string;
+  requestedSeats: number;
+  status: BookingStatus;
+  /** Live request state underneath the booking status. */
+  requestStatus: RideRequestStatus;
+  estimatedCost: number;
+  currency: string;
+  note: string | null;
+  driver: RideDriver;
+  vehicle: RideVehicle;
+  startLocation: string;
+  destination: string;
+  departureAt: string;
+  rideStatus: RideStatus;
+  tripId: string | null;
+  /** Server's decision — the client must not re-derive it. */
+  canCancel: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -452,4 +483,150 @@ export interface EmployeeHomeData {
     currency: string;
   };
   recentTrips: Trip[];
+}
+
+/* ------------------------------------------------------------------ */
+/* Admin monitoring views                                              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Ride as an administrator sees it: no viewer-relative state, but the
+ * organization, the passenger count and the created date the admin row is
+ * required to show.
+ */
+export interface AdminRideRow {
+  id: string;
+  organizationId: string;
+  organizationName: string;
+  driver: { id: string; name: string; department: string | null };
+  vehicle: RideVehicle;
+  startLocation: string;
+  destination: string;
+  departureAt: string;
+  totalSeats: number;
+  seatsTaken: number;
+  seatsAvailable: number;
+  passengerCount: number;
+  pendingRequests: number;
+  estimatedDistanceKm: number;
+  estimatedCost: number;
+  costPerSeat: number;
+  currency: string;
+  notes: string | null;
+  status: RideStatus;
+  tripId: string | null;
+  createdAt: string;
+}
+
+export interface AdminRideDetail extends AdminRideRow {
+  requests: Array<{
+    id: string;
+    passengerId: string;
+    passengerName: string;
+    passengerDepartment: string | null;
+    passengerEmployeeCode: string | null;
+    seats: number;
+    status: RideRequestStatus;
+    note: string | null;
+    createdAt: string;
+  }>;
+  auditLogs: AuditLogEntry[];
+}
+
+export interface AdminRideRequestRow {
+  id: string;
+  rideId: string;
+  startLocation: string;
+  destination: string;
+  departureAt: string;
+  driverId: string;
+  driverName: string;
+  passengerId: string;
+  passengerName: string;
+  passengerEmployeeCode: string | null;
+  passengerDepartment: string | null;
+  seats: number;
+  status: RideRequestStatus;
+  note: string | null;
+  createdAt: string;
+}
+
+export interface AdminTripRow {
+  id: string;
+  rideId: string;
+  driverId: string;
+  driverName: string;
+  startLocation: string;
+  destination: string;
+  vehicleLabel: string;
+  registrationNumber: string;
+  passengerCount: number;
+  distanceKm: number;
+  fuelConsumedLitres: number;
+  totalCost: number;
+  costPerKm: number;
+  currency: string;
+  status: TripStatus;
+  startedAt: string;
+  completedAt: string | null;
+}
+
+/** An employee waiting for an activation decision. */
+export interface EmployeeApproval {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  employeeCode: string | null;
+  department: string | null;
+  status: AccountStatus;
+  vehicleCount: number;
+  requestedAt: string;
+}
+
+/** A vehicle waiting for a review decision, with the employee who owns it. */
+export interface VehicleApproval {
+  id: string;
+  organizationId: string;
+  ownerId: string;
+  ownerName: string;
+  ownerEmail: string;
+  ownerEmployeeCode: string | null;
+  ownerDepartment: string | null;
+  make: string;
+  model: string;
+  registrationNumber: string;
+  vehicleType: VehicleType;
+  seatingCapacity: number;
+  color: string | null;
+  status: VehicleStatus;
+  submittedAt: string;
+}
+
+/* ------------------------------------------------------------------ */
+/* Notifications (derived — there is no notifications table in the MVP) */
+/* ------------------------------------------------------------------ */
+
+export type NotificationKind =
+  | 'seat_requested'
+  | 'seat_accepted'
+  | 'seat_rejected'
+  | 'seat_canceled'
+  | 'trip_started'
+  | 'trip_completed'
+  | 'vehicle_approved'
+  | 'vehicle_rejected'
+  | 'vehicle_submitted'
+  | 'employee_pending'
+  | 'admin_action';
+
+export interface NotificationItem {
+  id: string;
+  kind: NotificationKind;
+  title: string;
+  body: string;
+  /** Route inside the panel that raised it, or null when there is nothing to open. */
+  href: string | null;
+  requiresAction: boolean;
+  createdAt: string;
 }

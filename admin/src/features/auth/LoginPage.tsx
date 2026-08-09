@@ -47,7 +47,7 @@ export function LoginPage() {
     setBusy(true);
     try {
       await signIn(parsed.data.email, parsed.data.password);
-      navigate('/dashboard', { replace: true });
+      navigate('/admin/dashboard', { replace: true });
     } catch (error) {
       setFailure(
         error instanceof ApiError

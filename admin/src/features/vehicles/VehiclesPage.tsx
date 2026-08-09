@@ -178,7 +178,7 @@ export function VehiclesPage() {
                 </thead>
                 <tbody>
                   {items.map((vehicle) => (
-                    <tr key={vehicle.id} onClick={() => navigate(`/vehicles/${vehicle.id}`)}>
+                    <tr key={vehicle.id} onClick={() => navigate(`/admin/vehicles/${vehicle.id}`)}>
                       <td>
                         <div className="row">
                           <span className="card-statistic__icon">
@@ -208,7 +208,7 @@ export function VehiclesPage() {
                         <div className="table__actions">
                           <Link
                             className="btn btn-ghost btn-sm"
-                            to={`/vehicles/${vehicle.id}`}
+                            to={`/admin/vehicles/${vehicle.id}`}
                             onClick={(e) => e.stopPropagation()}
                           >
                             Open
